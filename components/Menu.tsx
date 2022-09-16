@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 // Import styling
 import { StyledMenu } from './styles/menu/StyledMenu'
@@ -20,12 +21,16 @@ interface MenuProps {
 }
 
 const Menu = ({ menu }: Props) => {
+  const router = useRouter()
   return (
     <StyledMenu>
       <StyledList>
         {menu.data.map(({ _id, name, url, active }: MenuProps) =>
           active ? (
-            <StyledLi key={_id}>
+            <StyledLi
+              className={router.asPath == url ? 'active' : ''}
+              key={_id}
+            >
               <Link href={url}>
                 <StyledA>{name}</StyledA>
               </Link>
