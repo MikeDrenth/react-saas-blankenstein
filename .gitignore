@@ -33,3 +33,7 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+.history
+.prettierrc.js
+.eslintrc.json
