@@ -5,6 +5,8 @@ import Link from 'next/link'
 import Menu from '../components/Menu'
 import Accommodaties from '../components/Accommodaties'
 
+import ObjectFilter from '../components/ObjectFilter'
+
 // Import styling
 import { StyledLogo } from '../components/styles/StyledLogo'
 import { StyledHeader } from '../components/styles/StyledHeader'
@@ -18,7 +20,7 @@ export default function Home({
   return (
     <div>
       <Head>
-        <title>{} | Blankenstein aan Zee</title>
+        <title>{` | Blankenstein aan Zee`}</title>
         <meta name="description" content="Welkom bij Blankenstein aan Zee" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -42,6 +44,7 @@ export default function Home({
         </StyledHeader>
       </main>
 
+      <ObjectFilter></ObjectFilter>
       <Accommodaties accommodaties={accommodaties} />
 
       <footer></footer>

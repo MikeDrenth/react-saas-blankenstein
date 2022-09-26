@@ -5,7 +5,9 @@ import Link from 'next/link'
 import Menu from '../components/Menu'
 import { IFrame } from '../components/IFrame'
 import { PageContent } from '../components/PageContent'
-import Block from '../components/Block'
+import HomeBlocks from '../components/HomeBlocks'
+import HeaderImage from '../components/HeaderImage'
+import TopBar from '../components/TopBar'
 
 // Import styling
 import { StyledLogo } from '../components/styles/StyledLogo'
@@ -18,6 +20,7 @@ import { InferGetServerSidePropsType } from 'next'
 export default function Home({
   homePage,
   menuItems,
+  homeBlocks,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { menu_naam, pagina_titel, highlight, inhoud, samenvatting, url } =
     homePage.data[0]
@@ -25,12 +28,13 @@ export default function Home({
   return (
     <div>
       <Head>
-        <title>{pagina_titel} | Blankenstein aan Zee</title>
+        <title>{`${pagina_titel} | Blankenstein aan Zee`}</title>
         <meta name="description" content="Welkom bij Blankenstein aan Zee" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
+        <TopBar />
         <StyledHeader>
           <StyledLogo>
             <Link href={url}>
@@ -48,26 +52,18 @@ export default function Home({
           <Menu menu={menuItems} />
         </StyledHeader>
 
-        {/* <Block blocks={homeBlocks} /> */}
+        <HeaderImage highlight={highlight}></HeaderImage>
 
-        <header>
-          <Image
-            width="1900"
-            height="500"
-            src={highlight}
-            alt="Blankenstein aan Zee"
-          />
-          <div>
-            {/* <h1>Pagina titel: {pagina_titel}</h1> */}
+        <HomeBlocks blocks={homeBlocks} />
 
-            <StyledIntroContent>
-              <IFrame height="350" url={samenvatting} width="100%" />
-              <StyledPageContent>
-                <PageContent inhoud={inhoud} />
-              </StyledPageContent>
-            </StyledIntroContent>
-          </div>
-        </header>
+        <div>
+          <StyledIntroContent>
+            <IFrame height="350" url={samenvatting} width="100%" />
+            <StyledPageContent>
+              <PageContent inhoud={inhoud} />
+            </StyledPageContent>
+          </StyledIntroContent>
+        </div>
       </main>
 
       <footer></footer>
@@ -76,7 +72,7 @@ export default function Home({
 }
 
 export async function getServerSideProps() {
-  const [homePageRes, menuItemsRes] = await Promise.all([
+  const [homePageRes, menuItemsRes, homeBlocksRes] = await Promise.all([
     fetch('http://localhost:3000/api/post/home', {
       method: 'GET',
       headers: {
@@ -89,13 +85,20 @@ export async function getServerSideProps() {
         'Content-Type': 'application/json',
       },
     }),
+    fetch('http://localhost:3000/api/home-blocks', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }),
   ])
-  const [homePage, menuItems] = await Promise.all([
+  const [homePage, menuItems, homeBlocks] = await Promise.all([
     homePageRes.json(),
     menuItemsRes.json(),
+    homeBlocksRes.json(),
   ])
 
   return {
-    props: { homePage, menuItems },
+    props: { homePage, menuItems, homeBlocks },
   }
 }
