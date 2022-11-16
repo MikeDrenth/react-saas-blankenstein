@@ -47,7 +47,7 @@ export default function Home({
 
 export const getServerSideProps = async (context) => {
   const { req } = context
-  const res = await fetch(`${req.headers.referer}/api/tasks`)
+  const res = await fetch(`https://nextjs-saas-delta.vercel.app/api/tasks`)
   const { tasks } = await res.json()
 
   return {
