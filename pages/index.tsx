@@ -35,7 +35,7 @@ export default function Home({
       <ul>
         {tasks.data.map(({ task_id, task_subject }: TaskProps) => (
           <div key={task_id}>
-            <li>{task_id}</li>
+            <li>Id: {task_id}</li>
             <li>{task_subject}</li>
           </div>
         ))}
