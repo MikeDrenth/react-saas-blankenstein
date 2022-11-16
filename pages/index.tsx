@@ -25,7 +25,6 @@ import { InferGetServerSidePropsType } from 'next'
 export default function Home({
   tasks,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(tasks)
   return (
     <div>
       <Head>
@@ -46,8 +45,9 @@ export default function Home({
   )
 }
 
-export const getServerSideProps = async () => {
-  const res = await fetch('http://localhost:3000/api/tasks')
+export const getServerSideProps = async (context) => {
+  const { req } = context
+  const res = await fetch(`${req.headers.referer}/api/tasks`)
   const { tasks } = await res.json()
 
   return {
