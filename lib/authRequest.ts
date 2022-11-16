@@ -3,8 +3,8 @@ const body = {
   password: process.env.AUTH_PASSWORD,
 }
 
-const TOKEN_ENDPOINT = process.env.AUTH_URL
-const API_URL = process.env.API_URL
+const TOKEN_ENDPOINT = process.env.AUTH_URL as string
+const API_URL = process.env.API_URL as string
 
 const getAccessToken = async () => {
   const response = await fetch(TOKEN_ENDPOINT, {

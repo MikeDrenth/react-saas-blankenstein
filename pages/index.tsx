@@ -1,19 +1,31 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
 
 interface Task {
   task_id: number
   task_subject: string
 }
 
+type Tasks = {
+  data: Data
+}
+
+type Data = {
+  data: []
+}
+
+type TaskProps = {
+  tasks: Tasks
+  task_id: number
+  task_subject: string
+  data: Data
+}
+
 import { InferGetServerSidePropsType } from 'next'
 
 export default function Home({
-  Tasks,
+  tasks,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(Tasks)
+  console.log(tasks)
   return (
     <div>
       <Head>
@@ -22,7 +34,7 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ul>
-        {Tasks.tasks.data.map(({ task_id, task_subject }: Task) => (
+        {tasks.data.map(({ task_id, task_subject }: TaskProps) => (
           <div key={task_id}>
             <li>{task_id}</li>
             <li>{task_subject}</li>
@@ -34,18 +46,11 @@ export default function Home({
   )
 }
 
-export async function getServerSideProps({ params }) {
-  const [tasksRes] = await Promise.all([
-    fetch(`http://localhost:3000/api/tasks`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }),
-  ])
-  const [Tasks] = await Promise.all([tasksRes.json()])
+export const getServerSideProps = async () => {
+  const res = await fetch('http://localhost:3000/api/tasks')
+  const { tasks } = await res.json()
 
   return {
-    props: { Tasks },
+    props: { tasks },
   }
 }
