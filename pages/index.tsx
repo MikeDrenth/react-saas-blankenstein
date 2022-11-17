@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { GetServerSideProps } from 'next'
 
 interface Task {
   task_id: number
@@ -45,7 +46,7 @@ export default function Home({
   )
 }
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req } = context
   const res = await fetch(`https://nextjs-saas-delta.vercel.app/api/tasks`)
   const { tasks } = await res.json()
