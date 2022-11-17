@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
 
   res.setHeader(
     'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59'
+    'public, s-maxage=900, stale-while-revalidate=899'
   )
 
   console.log('Fetch naar api/tasks vanuit index')
