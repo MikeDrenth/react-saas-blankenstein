@@ -26,8 +26,6 @@ import { InferGetServerSidePropsType } from 'next'
 export default function Home({
   tasks,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(tasks.data)
-
   return (
     <div>
       <Head>
@@ -49,7 +47,7 @@ export default function Home({
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
-  const response = await fetch(`https://localhost:3000/api/tasks`)
+  const response = await fetch(`https://nextjs-saas-delta.vercel.app/api/tasks`)
   const { tasks } = await response.json()
 
   res.setHeader(

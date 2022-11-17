@@ -23,7 +23,7 @@ const getAccessToken = async () => {
 export const getAllTasks = async () => {
   const { token } = await getAccessToken()
 
-  console.log('Fetch naar api/tasks')
+  console.log('Fetch naar api/tasks endpoint')
 
   return fetch(`${API_URL}/api/tasks`, {
     headers: {
