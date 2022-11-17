@@ -34,12 +34,12 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ul>
-        {/* {tasks.data.map(({ task_id, task_subject }: TaskProps) => (
+        {tasks.data.map(({ task_id, task_subject }: TaskProps) => (
           <div key={task_id}>
             <li>Id: {task_id}</li>
             <li>{task_subject}</li>
           </div>
-        ))} */}
+        ))}
       </ul>
       <footer></footer>
     </div>
