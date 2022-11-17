@@ -14,11 +14,16 @@ const getAccessToken = async () => {
     },
     body: JSON.stringify(body),
   })
+
+  console.log('Access token aangemakt')
+
   return response.json()
 }
 
 export const getAllTasks = async () => {
   const { token } = await getAccessToken()
+
+  console.log('Fetch naar api/tasks')
 
   return fetch(`${API_URL}/api/tasks`, {
     headers: {

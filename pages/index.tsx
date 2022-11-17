@@ -26,6 +26,8 @@ import { InferGetServerSidePropsType } from 'next'
 export default function Home({
   tasks,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  console.log(tasks.data)
+
   return (
     <div>
       <Head>
@@ -34,22 +36,28 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ul>
-        {tasks.data.map(({ task_id, task_subject }: TaskProps) => (
+        {/* {tasks.data.map(({ task_id, task_subject }: TaskProps) => (
           <div key={task_id}>
             <li>Id: {task_id}</li>
             <li>{task_subject}</li>
           </div>
-        ))}
+        ))} */}
       </ul>
       <footer></footer>
     </div>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context
-  const res = await fetch(`https://nextjs-saas-delta.vercel.app/api/tasks`)
-  const { tasks } = await res.json()
+export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
+  const response = await fetch(`https://localhost:3000/api/tasks`)
+  const { tasks } = await response.json()
+
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59'
+  )
+
+  console.log('Fetch naar api/tasks vanuit index')
 
   return {
     props: { tasks },
