@@ -1,12 +1,12 @@
-const body = {
-  user: process.env.AUTH_USERNAME,
-  password: process.env.AUTH_PASSWORD,
-}
-
 const TOKEN_ENDPOINT = process.env.AUTH_URL as string
-const API_URL = process.env.API_URL as string
 
-const getAccessToken = async () => {
+// Request doen om een bearer token aan te maken voor de api requests
+export const getAccessToken = async (props: any) => {
+  const body = {
+    user: `process.env.${props}_AUTH_USERNAME`,
+    password: `process.env.${props}_AUTH_PASSWORD`,
+  }
+
   const response = await fetch(TOKEN_ENDPOINT, {
     method: 'POST',
     headers: {
@@ -15,19 +15,5 @@ const getAccessToken = async () => {
     body: JSON.stringify(body),
   })
 
-  console.log('Access token aangemakt')
-
   return response.json()
-}
-
-export const getAllTasks = async () => {
-  const { token } = await getAccessToken()
-
-  console.log('Fetch naar api/tasks endpoint')
-
-  return fetch(`${API_URL}/api/tasks`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
 }

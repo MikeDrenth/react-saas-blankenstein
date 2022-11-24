@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
+import middleware from '../middleware'
 
 interface Task {
   task_id: number
@@ -34,30 +35,29 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ul>
-        {tasks.data.map(({ task_id, task_subject }: TaskProps) => (
+        {/* {tasks.data.map(({ task_id, task_subject }: TaskProps) => (
           <div key={task_id}>
             <li>Id: {task_id}</li>
             <li>{task_subject}</li>
           </div>
-        ))}
+        ))} */}
       </ul>
       <footer></footer>
     </div>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
-  const response = await fetch(`https://nextjs-saas-delta.vercel.app/api/tasks`)
-  const { tasks } = await response.json()
+// export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
+//   const referer = req.headers.host
+//   const response = await fetch(`http://localhost:3000/api/tasks`)
+//   const { tasks } = await response.json()
 
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=900, stale-while-revalidate=899'
-  )
+//   res.setHeader(
+//     'Cache-Control',
+//     'public, s-maxage=900, stale-while-revalidate=899'
+//   )
 
-  console.log('Fetch naar api/tasks vanuit index')
-
-  return {
-    props: { tasks },
-  }
-}
+//   return {
+//     props: { tasks },
+//   }
+// }
