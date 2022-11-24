@@ -5,24 +5,30 @@ import { useRouter } from 'next/router'
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { _SiteData, Meta } from '@/types'
 
-interface IndexProps {
-  project: []
+interface PathProps {
+  site: string
 }
 
-export default function Index({ project }: IndexProps) {
+interface IndexProps {
+  stringifiedData: string
+}
+
+export default function Index({ stringifiedData }: IndexProps) {
   const router = useRouter()
   if (router.isFallback) return <div>Loader</div>
 
+  const data = JSON.parse(stringifiedData) as _SiteData
+
   const meta = {
-    title: project.website,
-    description: `Welkom bij ${project.website}`,
+    title: data.website,
+    description: `Welkom bij ${data.website}`,
     logo: '/logo.png',
     ogImage: 'logotje',
     ogUrl: `https://westerbergen.vercel.pub`,
-    subdomain: project.website,
+    subdomain: data.website,
   } as Meta
 
-  return <Layout meta={meta}>Dit is de website van {project.website}</Layout>
+  return <Layout meta={meta}>Dit is de website van {data.website}</Layout>
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -34,15 +40,21 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps<IndexProps> = async ({
+  params,
+}) => {
+  if (!params) throw new Error('No path parameters found')
+  const { site } = params
   const data = [
     { domain: 'uplandparcs.localhost:3001', website: 'Uplandparcs' },
     { domain: 'westerbergen.localhost:3001', website: 'Westerbergen' },
   ]
 
-  const project = data.find((p) => p.domain === context.params.site)
+  const project = data.find((p) => p.domain === site)
 
   return {
-    props: { project },
+    props: {
+      stringifiedData: JSON.stringify(project),
+    },
   }
 }

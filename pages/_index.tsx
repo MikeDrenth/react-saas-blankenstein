@@ -24,9 +24,7 @@ type TaskProps = {
 
 import { InferGetServerSidePropsType } from 'next'
 
-export default function Home({
-  tasks,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Home() {
   return (
     <div>
       <Head>

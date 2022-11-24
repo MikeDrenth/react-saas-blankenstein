@@ -23,5 +23,3 @@ export const getTasks = async (props: string): Promise<void> => {
 
   return tasks
 }
-
-export default getTasks
