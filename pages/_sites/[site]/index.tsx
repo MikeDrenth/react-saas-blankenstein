@@ -34,7 +34,7 @@ export default function Index({ stringifiedData }: IndexProps) {
 import { getSiteInfo } from '@/lib/getWebsiteInfo'
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = [{ params: { site: 'uplandparcs.localhost:3001' } }]
+  const paths = [{ params: { site: 'uplandparcs.localhost:3000' } }]
 
   return {
     paths: paths,
@@ -44,8 +44,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<IndexProps> = async ({
   params,
-  res,
-  req,
 }) => {
   if (!params) throw new Error('No path parameters found')
 
@@ -58,15 +56,15 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
   // const project = data.find((p) => p.domain === site)
   // console.log(project, 'project')
 
-  const respone = await getSiteInfo(params.site)
-  const responseJson = await respone
+  // const respone = await getSiteInfo(params.site)
+  // const responseJson = await respone
 
-  console.log(responseJson, 'index')
+  // console.log(responseJson, 'index')
 
-  res.setHeader(
-    'cache-control',
-    'public s-max-age=900 stale-with-revalidate=899'
-  )
+  // res.setHeader(
+  //   'cache-control',
+  //   'public s-max-age=900 stale-with-revalidate=899'
+  // )
 
   return {
     props: {
