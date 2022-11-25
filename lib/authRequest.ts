@@ -1,10 +1,15 @@
 const TOKEN_ENDPOINT = process.env.AUTH_URL as string
 
 // Request doen om een bearer token aan te maken voor de api requests
-export const getAccessToken = async (props: any) => {
+export const getAccessToken = async (site: string) => {
+  if (!site) return
+
+  // Dynamisch de env variable ophalen adhv meegeven site
+  const AUTH_USER = `${site}_AUTH_USERNAME`
+  const AUTH_PASSWORD = `${site}_AUTH_PASSWORD`
   const body = {
-    user: `process.env.${props}_AUTH_USERNAME`,
-    password: `process.env.${props}_AUTH_PASSWORD`,
+    user: process.env[AUTH_USER],
+    password: process.env[AUTH_PASSWORD],
   }
 
   const response = await fetch(TOKEN_ENDPOINT, {
@@ -14,6 +19,8 @@ export const getAccessToken = async (props: any) => {
     },
     body: JSON.stringify(body),
   })
+
+  console.log(response)
 
   return response.json()
 }

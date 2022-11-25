@@ -51,7 +51,7 @@ export default function middleware(req: NextRequest) {
   }
 
   // rewrite root application to `/home` folder
-  if (hostname === 'localhost:3001' || hostname === 'platformize.vercel.app') {
+  if (hostname === 'localhost:3000' || hostname === 'platformize.vercel.app') {
     url.pathname = `/home${url.pathname}`
     console.log(url.pathname)
 
