@@ -10,10 +10,10 @@ interface PathProps {
 }
 
 interface IndexProps {
-  stringifiedData: string
+  // stringifiedData: string
 }
 
-export default function Index({ stringifiedData }: IndexProps) {
+export default function Index() {
   const router = useRouter()
   if (router.isFallback) return <div>Loader</div>
 
