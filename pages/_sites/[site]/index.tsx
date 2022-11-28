@@ -10,25 +10,29 @@ interface PathProps {
 }
 
 interface IndexProps {
-  // stringifiedData: string
+  stringifiedData: string
 }
 
-export default function Index() {
+export default function Index({ stringifiedData }: IndexProps) {
   const router = useRouter()
   if (router.isFallback) return <div>Loader</div>
 
-  // const data = JSON.parse(stringifiedData) as _SiteData
+  if (!stringifiedData) return
 
   // const meta = {
-  //   title: data.website,
-  //   description: `Welkom bij ${data.website}`,
+  //   title: data.site_name,
+  //   description: `Welkom bij ${data.site_name}`,
   //   logo: '/logo.png',
   //   ogImage: 'logotje',
   //   ogUrl: `https://westerbergen.vercel.pub`,
-  //   subdomain: data.website,
+  //   subdomain: data.site_name,
   // } as Meta
 
-  return <Layout>Dit is de website van</Layout>
+  const data = JSON.parse(stringifiedData) as _SiteData
+
+  console.log(data)
+
+  return <Layout>Dit is de website van </Layout>
 }
 
 import { getSiteInfo } from '@/lib/getWebsiteInfo'
@@ -47,7 +51,7 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
 }) => {
   if (!params) throw new Error('No path parameters found')
 
-  // const { site: string } = params.site.site
+  const { site } = params
   // const data = [
   //   { domain: 'uplandparcs', website: 'www.uplandparcs.nl' },
   //   { domain: 'westerbergen', website: 'www.uplandparcs.nl' },
@@ -56,19 +60,16 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
   // const project = data.find((p) => p.domain === site)
   // console.log(project, 'project')
 
-  // const respone = await getSiteInfo(params.site)
-  // const responseJson = await respone
-
-  // console.log(responseJson, 'index')
+  const respone = await getSiteInfo(site as string)
+  const data = await respone
 
   // res.setHeader(
   //   'cache-control',
   //   'public s-max-age=900 stale-with-revalidate=899'
   // )
-
   return {
     props: {
-      // stringifiedData: JSON.stringify(respone),
+      stringifiedData: JSON.stringify(data),
     },
   }
 }

@@ -2,7 +2,7 @@ import { getAccessToken } from './authRequest'
 
 const API_URL = process.env.API_URL as string
 
-// Request naar de taken end point doen
+// Fetch naar alle websites doen
 const fetchAllSites = async (site: string) => {
   const { token } = await getAccessToken(site)
 
@@ -13,11 +13,13 @@ const fetchAllSites = async (site: string) => {
   })
 }
 
-// Request naar de taken end point doen
+// Bijbehoorende website ophalen
 const fetchSite = async (site: string) => {
   const { token } = await getAccessToken(site)
 
-  return fetch(`${API_URL}/api/sites/`, {
+  const SITE = `${site}_DOMAIN`
+  const DOMAIN = process.env[SITE]
+  return fetch(`${API_URL}/api/sites?filter[domains.domain_name]=${DOMAIN}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -25,8 +27,8 @@ const fetchSite = async (site: string) => {
 }
 
 export const getSiteInfo = async (site: string): Promise<void> => {
-  const response = await fetchAllSites(site)
-  const siteInfo = await response.json()
+  const response = await fetchSite(site)
+  const { data } = await response.json()
 
-  return siteInfo
+  return data
 }

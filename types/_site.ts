@@ -1,5 +1,5 @@
 export interface _SiteData {
-  website: string
-  domain: string
-  logo: string
+  site_id: number
+  site_name: string
+  site_description: string
 }

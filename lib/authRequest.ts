@@ -20,7 +20,5 @@ export const getAccessToken = async (site: string) => {
     body: JSON.stringify(body),
   })
 
-  console.log(response)
-
   return response.json()
 }
