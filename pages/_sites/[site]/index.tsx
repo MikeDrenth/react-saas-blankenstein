@@ -16,23 +16,22 @@ interface IndexProps {
 export default function Index({ stringifiedData }: IndexProps) {
   const router = useRouter()
   if (router.isFallback) return <div>Loader</div>
-
   if (!stringifiedData) return
-
-  // const meta = {
-  //   title: data.site_name,
-  //   description: `Welkom bij ${data.site_name}`,
-  //   logo: '/logo.png',
-  //   ogImage: 'logotje',
-  //   ogUrl: `https://westerbergen.vercel.pub`,
-  //   subdomain: data.site_name,
-  // } as Meta
 
   const data = JSON.parse(stringifiedData) as _SiteData
 
-  console.log(data)
+  const meta = {
+    title: data[0].site_name,
+    description: `Welkom bij ${data[0].site_name}`,
+    logo: '/logo.png',
+    ogImage: 'logotje',
+    ogUrl: `https://westerbergen.vercel.pub`,
+    subdomain: data[0].site_name,
+  } as Meta
 
-  return <Layout>Dit is de website van </Layout>
+  console.log(data[0].site_name)
+
+  return <Layout>Dit is de website van {data[0].site_name} </Layout>
 }
 
 import { getSiteInfo } from '@/lib/getWebsiteInfo'
