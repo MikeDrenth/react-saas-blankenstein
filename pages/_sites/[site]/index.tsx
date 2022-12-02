@@ -59,8 +59,7 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
   // const project = data.find((p) => p.domain === site)
   // console.log(project, 'project')
 
-  const respone = await getSiteInfo(site as string)
-  const data = await respone
+  const data = await getSiteInfo(site as string)
 
   // res.setHeader(
   //   'cache-control',

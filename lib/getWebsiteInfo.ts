@@ -20,6 +20,9 @@ const fetchSite = async (site: string) => {
   const SITE = `${site}_DOMAIN`
   const DOMAIN = process.env[SITE]
   return fetch(`${API_URL}/api/sites?filter[domains.domain_name]=${DOMAIN}`, {
+    next: {
+      revalidate: 10,
+    },
     headers: {
       Authorization: `Bearer ${token}`,
     },
