@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 
+import Menu from '@/components/Menu'
+
 import type { Meta, WithChildren } from '@/types'
 
 interface LayoutProps extends WithChildren {
@@ -18,7 +20,6 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
         <link rel="icon" href="/favicon.ico" />
         <link rel="shortcut icon" type="image/x-icon" href={meta?.logo} />
         <link rel="apple-touch-icon" sizes="180x180" href={meta?.logo} />
-        <meta name="theme-color" content="#7b46f6" />
 
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,21 +44,7 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
       </Head>
       <div>
         <div className="flex justify-center items-center space-x-5 h-full max-w-screen-xl mx-auto px-10 sm:px-20">
-          {/* <Link href="/" className="flex justify-center items-center">
-            {meta?.logo && (
-              <div className="h-8 w-8 inline-block rounded-full overflow-hidden align-middle">
-                <Image
-                  alt={meta?.title ?? 'Logo'}
-                  height={40}
-                  src={meta?.logo}
-                  width={40}
-                />
-              </div>
-            )}
-            <span className="inline-block ml-3 font-medium truncate">
-              {meta?.title}
-            </span>
-          </Link> */}
+          <Menu pages={meta?.pages}></Menu>
         </div>
       </div>
 

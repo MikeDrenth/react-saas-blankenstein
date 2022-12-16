@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { _SiteData, Meta } from '@/types'
+import { getSiteInfo, getPages } from '@/lib/getWebsiteInfo'
 
 interface PathProps {
   site: string
@@ -11,30 +12,33 @@ interface PathProps {
 
 interface IndexProps {
   stringifiedData: string
+  stringifiedPages: string
 }
 
-export default function Index({ stringifiedData }: IndexProps) {
+export default function Index({
+  stringifiedData,
+  stringifiedPages,
+}: IndexProps) {
   const router = useRouter()
   if (router.isFallback) return <div>Loader</div>
   if (!stringifiedData) return
 
-  const data = JSON.parse(stringifiedData) as _SiteData
+  const data = JSON.parse(stringifiedData)
+  const pagesData = JSON.parse(stringifiedPages)
+  const info = data[0]
 
   const meta = {
-    title: data[0].site_name,
-    description: `Welkom bij ${data[0].site_name}`,
+    title: info.site_name,
+    description: `Welkom bij ${info.description}`,
     logo: '/logo.png',
     ogImage: 'logotje',
     ogUrl: `https://westerbergen.vercel.pub`,
-    subdomain: data[0].site_name,
+    subdomain: info.site_name,
+    pages: pagesData,
   } as Meta
 
-  console.log(data[0].site_name)
-
-  return <Layout>Dit is de website van {data[0].site_name} </Layout>
+  return <Layout meta={meta}></Layout>
 }
-
-import { getSiteInfo } from '@/lib/getWebsiteInfo'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = [{ params: { site: 'uplandparcs.localhost:3000' } }]
@@ -60,6 +64,9 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
   // console.log(project, 'project')
 
   const data = await getSiteInfo(site as string)
+  const siteId = data[0].site_id
+
+  const pages = await getPages(site, siteId)
 
   // res.setHeader(
   //   'cache-control',
@@ -68,6 +75,7 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
   return {
     props: {
       stringifiedData: JSON.stringify(data),
+      stringifiedPages: JSON.stringify(pages),
     },
   }
 }

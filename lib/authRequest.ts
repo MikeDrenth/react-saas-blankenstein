@@ -2,7 +2,7 @@ const TOKEN_ENDPOINT = process.env.AUTH_URL as string
 
 // Request doen om een bearer token aan te maken voor de api requests
 export const getAccessToken = async (site: string) => {
-  if (!site) return
+  if (!site) throw new Error('Geen geldige website opgegeven.')
 
   // Dynamisch de env variable ophalen adhv meegeven site
   const AUTH_USER = `${site}_AUTH_USERNAME`
@@ -16,9 +16,10 @@ export const getAccessToken = async (site: string) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Cache-Control': 'private max-age=86400 immutable',
     },
     body: JSON.stringify(body),
   })
 
-  return response.json()
+  return await response.json()
 }
