@@ -24,7 +24,7 @@ export default function Index({
   if (!stringifiedData) return
 
   const data = JSON.parse(stringifiedData)
-  const pagesData = JSON.parse(stringifiedPages)
+  const pages = JSON.parse(stringifiedPages)
   const info = data[0]
 
   const meta = {
@@ -34,39 +34,71 @@ export default function Index({
     ogImage: 'logotje',
     ogUrl: `https://westerbergen.vercel.pub`,
     subdomain: info.site_name,
-    pages: pagesData,
+    pages: pages,
   } as Meta
 
   return <Layout meta={meta}></Layout>
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = [{ params: { site: 'uplandparcs.localhost:3000' } }]
+import { allWebsiteData } from '@/lib/allWebsiteData'
 
+export const getStaticPaths: GetStaticPaths = async () => {
+  const data = await allWebsiteData()
+  // const paths = [
+  //   {
+  //     params: {
+  //       site: 'blankensteinaanzee.localhost:3000',
+  //       local: 'blankensteinaanzee.localhost:3000',
+  //       live: 'blankensteinaanzee.localhost:3000',
+  //     },
+  //   },
+  //   {
+  //     params: {
+  //       site: 'uplandparcs.localhost:3000',
+  //       local: 'uplandparcs.localhost:3000',
+  //       live: 'uplandparcs.localhost:3000',
+  //     },
+  //   },
+  // ]
   return {
-    paths: paths,
+    paths: data,
     fallback: 'blocking',
   }
+
+  // const paths = data.comments.map((comment) => {
+  //   return {
+  //     params: {
+  //       postId: comment.postId,
+  //       commentId: comment.id
+  //     }
+  //   }
+  // });
+
+  // return {
+  //   paths,
+  //   fallback: false
+  // }
 }
 
 export const getStaticProps: GetStaticProps<IndexProps> = async ({
   params,
 }) => {
   if (!params) throw new Error('No path parameters found')
-
   const { site } = params
+  const domain = site?.split('.')[0]
+  const siteId = site?.split('.')[1]
+  console.log(domain, siteId)
   // const data = [
   //   { domain: 'uplandparcs', website: 'www.uplandparcs.nl' },
   //   { domain: 'westerbergen', website: 'www.uplandparcs.nl' },
   // ]
 
   // const project = data.find((p) => p.domain === site)
-  // console.log(project, 'project')
 
-  const data = await getSiteInfo(site as string)
-  const siteId = data[0].site_id
+  // console.log(site, 'website')
 
-  const pages = await getPages(site, siteId)
+  const data = await getSiteInfo(domain as string)
+  const pages = await getPages(domain, siteId)
 
   // res.setHeader(
   //   'cache-control',
