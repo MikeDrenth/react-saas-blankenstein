@@ -66,7 +66,6 @@ export const fetchLayouts = async (
 ) => {
   const { token } = await getAccessToken(site)
   if (!token) throw new Error('Geen geldige token opgegeven')
-
   try {
     return fetch(
       `${API_URL}/sites/${siteId}/pages/${pageId}?include=layoutRows`,
@@ -89,13 +88,13 @@ export const fetchPageInfo = async (
 ) => {
   const { token } = await getAccessToken(site)
   if (!token) throw new Error('Geen geldige token opgegeven')
-
   try {
     return fetch(
       `${API_URL}sites/${siteId}/pages?filter[page_url]=${pageUrl}`,
       {
         headers: {
-          Authoriazation: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'private max-age=900 immutable',
         },
       }
     )
@@ -142,8 +141,6 @@ export const getPageInfo = async (
     throw new Error('Geen geldige site, siteId of pageId opgegeven')
   const response = await fetchPageInfo(site, siteId, pageUrl)
   const { data } = await response?.json()
-
-  console.log(response, 'res')
 
   return data
 }

@@ -56,8 +56,11 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
           <Menu pages={meta?.pages}></Menu>
         </div>
       </nav>
+      <div className="pt-20">
+        <h1 className="mt-8 text-4xl text-center">{meta?.pageTitle}</h1>
 
-      <div className="mt-20">{children}</div>
+        {children}
+      </div>
     </div>
   )
 }

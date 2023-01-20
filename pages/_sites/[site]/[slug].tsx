@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Layout from '@/components/sites/Layout'
 
 interface PathProps extends ParsedUrlQuery {
   site: string
@@ -7,23 +8,33 @@ interface PathProps extends ParsedUrlQuery {
 
 interface PostProps {
   stringifiedData: string
-  stringifiedAdjacentPosts: string
+  stringifiedPages: string
 }
 
-export default function Post({
-  stringifiedAdjacentPosts,
-  stringifiedData,
-}: PostProps) {
+export default function Post({ stringifiedPages, stringifiedData }: PostProps) {
   const router = useRouter()
   if (router.isFallback) return <Loader />
 
   if (!stringifiedData) return
 
   const data = JSON.parse(stringifiedData)
+  const pages = JSON.parse(stringifiedPages)
+  const info = data[0]
 
   console.log(data, 'data')
 
-  return <div>Stukje wat hier komt ofzo</div>
+  const meta = {
+    title: info.site_name,
+    description: `Welkom bij ${info.description}`,
+    logo: '/logo.png',
+    ogImage: 'logotje',
+    ogUrl: `https://westerbergen.vercel.pub`,
+    subdomain: info.site_name,
+    pageTitle: info.page_title,
+    pages: pages,
+  } as Meta
+
+  return <Layout meta={meta}></Layout>
 }
 
 import { allWebsiteData } from '@/lib/allWebsiteData'
@@ -82,13 +93,12 @@ export const getStaticProps: GetStaticProps<PostProps, PathProps> = async ({
   const siteId = siteInfo[0].site_id
 
   const data = await getPageInfo(site, siteId, slug)
-
-  console.log(data, 'beneden data')
+  const pages = await getPages(site, siteId)
 
   return {
     props: {
-      // stringifiedData: JSON.stringify(data),
-      // stringifiedPages: JSON.stringify(pages),
+      stringifiedData: JSON.stringify(data),
+      stringifiedPages: JSON.stringify(pages),
     },
   }
 }
