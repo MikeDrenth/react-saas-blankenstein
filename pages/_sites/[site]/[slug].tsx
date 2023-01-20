@@ -17,11 +17,17 @@ export default function Post({
   const router = useRouter()
   if (router.isFallback) return <Loader />
 
+  if (!stringifiedData) return
+
+  const data = JSON.parse(stringifiedData)
+
+  console.log(data, 'data')
+
   return <div>Stukje wat hier komt ofzo</div>
 }
 
 import { allWebsiteData } from '@/lib/allWebsiteData'
-import { getSiteInfo, getPages } from '@/lib/getWebsiteInfo'
+import { getSiteInfo, getPages, getPageInfo } from '@/lib/getWebsiteInfo'
 
 // export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
 //   const currenthost = req.headers.host
@@ -40,7 +46,7 @@ import { getSiteInfo, getPages } from '@/lib/getWebsiteInfo'
 // }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const data = await allWebsiteData()
+  const data = allWebsiteData()
 
   const pages = async () => {
     const allPages = data.map(async ({ params }) => {
@@ -48,35 +54,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
       const siteInfo = await getSiteInfo(site as string)
       if (typeof siteInfo === typeof undefined) return
       const siteId = siteInfo[0].site_id
-      const allPages = await getPages(site, siteId)
-      allPages.map((pages) => {
-        return {
-          params: {
-            site: 'blankensteinaanzee',
-            slug: 'overnachten',
-          },
-        }
-      })
+      const pages = await getPages(site, siteId)
+      return pages.map((pages) => ({
+        params: { site: 'appelsap', slug: pages.page_url, id: siteId },
+      }))
     })
 
     return await Promise.all(allPages)
   }
 
-  const paths1 = await pages()
-
-  console.log(paths1, '123123123')
-
-  const paths = [
-    {
-      params: {
-        site: 'blankensteinaanzee',
-        slug: '/overnachten',
-      },
-    },
-  ]
+  const paths = await pages()
 
   return {
-    paths,
+    paths: paths[0],
     fallback: 'blocking',
   }
 }
@@ -86,8 +76,14 @@ export const getStaticProps: GetStaticProps<PostProps, PathProps> = async ({
 }) => {
   if (!params) throw new Error('No path parameters found')
   const { site, slug } = params
+  console.log(params, 'sdfsdfsdfsdfsdfsdfsdfsdf')
 
-  // const columns = getLayouts(site, siteId, pageId)
+  const siteInfo = await getSiteInfo(site as string)
+  const siteId = siteInfo[0].site_id
+
+  const data = await getPageInfo(site, siteId, slug)
+
+  console.log(data, 'beneden data')
 
   return {
     props: {

@@ -85,9 +85,6 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
 }) => {
   if (!params) throw new Error('No path parameters found')
   const { site } = params
-  const domain = site?.split('.')[0]
-  const siteId = site?.split('.')[1]
-  console.log(domain, siteId)
   // const data = [
   //   { domain: 'uplandparcs', website: 'www.uplandparcs.nl' },
   //   { domain: 'westerbergen', website: 'www.uplandparcs.nl' },
@@ -97,8 +94,9 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
 
   // console.log(site, 'website')
 
-  const data = await getSiteInfo(domain as string)
-  const pages = await getPages(domain, siteId)
+  const data = await getSiteInfo(site as string)
+  const siteId = data[0].site_id
+  const pages = await getPages(site, siteId)
 
   // res.setHeader(
   //   'cache-control',
