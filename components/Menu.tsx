@@ -83,12 +83,12 @@ const DropdownMenu = ({ pages }: PageProps) => {
                     return
                   return (
                     <li key={child.page_id}>
-                      <Link
+                      <a
                         className="cursor-pointer block bg-slate-200 hover:text-white text-black hover:bg-cyan-500 px-4 py-2"
                         href={child.page_url}
                       >
                         {child.page_menuname}
-                      </Link>
+                      </a>
                     </li>
                   )
                 })}
@@ -105,10 +105,7 @@ const DropdownMenu = ({ pages }: PageProps) => {
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path
-            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-            clip-rule="evenodd"
-          ></path>
+          <path d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"></path>
         </svg>
       </button>
     </div>

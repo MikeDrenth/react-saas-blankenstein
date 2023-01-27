@@ -1,6 +1,4 @@
 import { getAccessToken } from './authRequest'
-import { NextRequest, NextResponse } from 'next/server'
-
 const API_URL = process.env.API_URL as string
 
 // Fetch naar alle websites doen
@@ -58,23 +56,26 @@ export const fetchPages = async (site: string, siteId: number) => {
   }
 }
 
-// Alle layouts ophalen van de huidige pagina
-export const fetchLayouts = async (
-  site: string,
-  siteId: number,
-  pageId: number
-) => {
-  const { token } = await getAccessToken(site)
-  if (!token) throw new Error('Geen geldige token opgegeven')
+const fetchLayouts = async (site: string, siteId: number, pageId: number) => {
   try {
-    return fetch(
-      `${API_URL}/sites/${siteId}/pages/${pageId}?include=layoutRows`,
+    const { token } = await getAccessToken(site)
+    const headers = new Headers()
+    headers.append('Content-Type', 'application/json')
+    headers.append('Authorization', `Bearer ${token}`)
+
+    const response = await fetch(
+      `${API_URL}sites/${siteId}/pages/${pageId}?include=layoutRows.columns.col`,
       {
-        headers: {
-          Authoriazation: `Bearer ${token}`,
-        },
+        method: 'GET',
+        headers: headers,
       }
     )
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return await response.json()
   } catch (error) {
     console.log(error)
   }
@@ -119,19 +120,6 @@ export const getSiteInfo = async (site: string): Promise<void> => {
   return data
 }
 
-export const getLayouts = async (
-  site: string,
-  siteId: number,
-  pageId: number
-) => {
-  if (!site || !siteId || !pageId)
-    throw new Error('Geen geldige site, siteId of pageId opgegeven')
-  const response = await fetchLayouts(site, siteId, pageId)
-  const { data } = await response?.json()
-
-  return data
-}
-
 export const getPageInfo = async (
   site: string,
   siteId: number,
@@ -143,4 +131,16 @@ export const getPageInfo = async (
   const { data } = await response?.json()
 
   return data
+}
+
+export const getLayouts = async (
+  site: string,
+  siteId: number,
+  pageId: number
+) => {
+  if (!site || !siteId || !pageId)
+    throw new Error('Geen geldige site, siteId of pageId opgegeven')
+  const layouts = await fetchLayouts(site, siteId, pageId)
+
+  return layouts
 }

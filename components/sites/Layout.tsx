@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Menu from '@/components/Menu'
 
 import type { Meta, WithChildren } from '@/types'
+import GridLayouts from '../GridLayouts'
 
 interface LayoutProps extends WithChildren {
   meta?: Meta
@@ -58,8 +59,11 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
       </nav>
       <div className="pt-20">
         <h1 className="mt-8 text-4xl text-center">{meta?.pageTitle}</h1>
-
-        {children}
+        <GridLayouts layouts={meta.layoutRows} />
+        {/* {meta.layoutRows.map(
+          ({ columns }, index) => console.log(columns, 'columns')
+          // <p key={index}>{item.columns.conn_id}</p>
+        )} */}
       </div>
     </div>
   )

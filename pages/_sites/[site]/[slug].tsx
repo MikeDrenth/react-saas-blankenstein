@@ -15,22 +15,21 @@ export default function Post({ stringifiedPages, stringifiedData }: PostProps) {
   const router = useRouter()
   if (router.isFallback) return <Loader />
 
-  if (!stringifiedData) return
+  if (!stringifiedData || !stringifiedPages) return
 
-  const data = JSON.parse(stringifiedData)
+  const info = JSON.parse(stringifiedData)
   const pages = JSON.parse(stringifiedPages)
-  const info = data[0]
-
-  console.log(data, 'data')
+  const { data } = info
 
   const meta = {
-    title: info.site_name,
-    description: `Welkom bij ${info.description}`,
+    title: data?.site_name,
+    description: `Welkom bij ${data?.description}`,
     logo: '/logo.png',
     ogImage: 'logotje',
     ogUrl: `https://westerbergen.vercel.pub`,
-    subdomain: info.site_name,
-    pageTitle: info.page_title,
+    subdomain: data?.site_name,
+    pageTitle: data?.page_title,
+    layoutRows: data?.layoutRows,
     pages: pages,
   } as Meta
 
@@ -38,27 +37,19 @@ export default function Post({ stringifiedPages, stringifiedData }: PostProps) {
 }
 
 import { allWebsiteData } from '@/lib/allWebsiteData'
-import { getSiteInfo, getPages, getPageInfo } from '@/lib/getWebsiteInfo'
-
-// export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
-//   const currenthost = req.headers.host
-//   console.log(currenthost)
-//   const response = await fetch(`http://localhost/api/tasks`)
-//   const { tasks } = await response.json()
-
-//   res.setHeader(
-//     'Cache-Control',
-//     'public, s-maxage=900, stale-while-revalidate=899'
-//   )
-
-//   return {
-//     // props: { tasks },
-//   }
-// }
+import {
+  getSiteInfo,
+  getPages,
+  getPageInfo,
+  getLayouts,
+} from '@/lib/getWebsiteInfo'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = allWebsiteData()
 
+  // Hieronder worden alle pagina's ophaald van website's binenn het project
+  // Deze zijn nodig voor bij de build, dit zorgt voor een sneller load
+  // Kijken hoe dit gaat met caching en of dit eventueel voor problemen kan zorgen bij de build van de website
   const pages = async () => {
     const allPages = data.map(async ({ params }) => {
       const site = params.site
@@ -87,13 +78,15 @@ export const getStaticProps: GetStaticProps<PostProps, PathProps> = async ({
 }) => {
   if (!params) throw new Error('No path parameters found')
   const { site, slug } = params
-  console.log(params, 'sdfsdfsdfsdfsdfsdfsdfsdf')
 
+  // Site info ophalen, deze is nodig voor de site id adhv de website
+  // Deze is nodig voor het ophalen van de layouts of andere pagina informatie
   const siteInfo = await getSiteInfo(site as string)
   const siteId = siteInfo[0].site_id
-
-  const data = await getPageInfo(site, siteId, slug)
   const pages = await getPages(site, siteId)
+  const pageInfo = await getPageInfo(site, siteId, slug)
+  const pageId = pageInfo[0].page_id
+  const data = await getLayouts(site, siteId, pageId)
 
   return {
     props: {
