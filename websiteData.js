@@ -1,8 +1,8 @@
 export const websiteData = [
   {
-    site: " 123",
-    local: "asdasd.localhost",
-    live: "asdasd.asdasd",
+    site: "nextjs-saas-mikedrenth",
+    local: "blankensteinaanzee.localhost",
+    live: "boeken.blankensteinaanzee",
     siteId: 222,
   },
   // {
