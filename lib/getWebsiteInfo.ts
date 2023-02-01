@@ -25,7 +25,7 @@ export const fetchSite = async (site: string) => {
   const SITE = `${site}_DOMAIN`;
   const DOMAIN = process.env[SITE];
   try {
-    return fetch(`${API_URL}sites?filter[domains.domain_name]=${DOMAIN}`, {
+    return fetch(`${API_URL}/sites?filter[domains.domain_name]=${DOMAIN}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Cache-Control": "private max-age=900 immutable",
@@ -94,7 +94,7 @@ export const fetchPages = async (site: string) => {
 const fetchLayouts = async (site: string, siteId: number, pageId: number) => {
   const { token } = await getAccessToken(site);
   const response = await fetch(
-    `${API_URL}sites/${siteId}/pages/${pageId}?include=layoutRows.columns.col`,
+    `${API_URL}/sites/${siteId}/pages/${pageId}?include=layoutRows.columns.col`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
