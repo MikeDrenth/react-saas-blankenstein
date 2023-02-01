@@ -11,18 +11,19 @@ export const getAccessToken = async (site: string) => {
     user: process.env[AUTH_USER],
     password: process.env[AUTH_PASSWORD],
   };
-  try {
-    const response = await fetch(TOKEN_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "public max-age=86400 immutable",
-      },
-      body: JSON.stringify(body),
+  return await fetch(TOKEN_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "public max-age=86400 immutable",
+    },
+    body: JSON.stringify(body),
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return res.text().then((text) => {
+      throw new Error(text);
     });
-
-    return await response.json();
-  } catch (error) {
-    console.log(error);
-  }
+  });
 };
