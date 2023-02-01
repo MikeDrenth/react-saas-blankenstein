@@ -16,7 +16,7 @@
       "@/types": ["types/index"],
       "@/types/*": ["types/*"]
     },
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext", "ES2021.String"],
     "allowJs": true,
     "noEmit": true,
     "incremental": true,

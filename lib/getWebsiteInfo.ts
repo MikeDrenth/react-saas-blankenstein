@@ -45,6 +45,15 @@ export const fetchPages = async (site: string) => {
   const DOMAIN = process.env[SITE];
 
   try {
+    // return fetch(
+    //   `${API_URL}sites/${siteId}/pages?filter[language_id]=1&filter[parent_id]=0&filter[page_hidden_menu]=nee&include=children`,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //       "Cache-Control": "private max-age=900 immutable",
+    //     },
+    //   }
+    // );
     return fetch(
       `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[language_id]=1&filter[parent_id]=0&filter[page_hidden_menu]=nee&include=children`,
       {

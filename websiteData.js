@@ -5,7 +5,7 @@ export const websiteData = [
   //   live: "boeken.blankensteinaanzee",
   // },
   {
-    site: "nextjs-saas-mikedrenth",
+    site: "nextjssaasmikedrenth",
     local: "blankensteinaanzee.localhost",
     live: "boeken.blankensteinaanzee",
   },
