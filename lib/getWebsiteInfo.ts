@@ -121,29 +121,6 @@ const fetchLayouts = async (site: string, siteId: number, pageId: number) => {
   return await response.json();
 };
 
-// Pagina info opzoeken aan de hand van pagina url
-export const fetchPageInfo = async (
-  site: string,
-  siteId: number,
-  pageUrl: string
-) => {
-  const { token } = await getAccessToken(site);
-  if (!token) throw new Error("Geen geldige token opgegeven");
-  try {
-    return fetch(
-      `${API_URL}/sites/${siteId}/pages?filter[page_url]=${pageUrl}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Cache-Control": "private max-age=900 immutable",
-        },
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const getPages = async (site: string): Promise<void> => {
   if (!site) throw new Error("Geen geldige site of siteId opgegeven");
   const response = await fetchPages(site);
@@ -155,19 +132,6 @@ export const getPages = async (site: string): Promise<void> => {
 export const getSiteInfo = async (site: string): Promise<void> => {
   if (!site) throw new Error("Geen geldige site opgegeven");
   const response = await fetchSite(site);
-  const { data } = await response?.json();
-
-  return data;
-};
-
-export const getPageInfo = async (
-  site: string,
-  siteId: number,
-  pageUrl: string
-) => {
-  if (!site || !siteId || !pageUrl)
-    throw new Error("Geen geldige site, siteId of pageId opgegeven");
-  const response = await fetchPageInfo(site, siteId, pageUrl);
   const { data } = await response?.json();
 
   return data;
