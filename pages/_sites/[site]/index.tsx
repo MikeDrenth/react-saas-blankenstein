@@ -85,22 +85,10 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
 }) => {
   if (!params) throw new Error("No path parameters found");
   const { site } = params;
-  // const data = [
-  //   { domain: 'uplandparcs', website: 'www.uplandparcs.nl' },
-  //   { domain: 'westerbergen', website: 'www.uplandparcs.nl' },
-  // ]
-
-  // const project = data.find((p) => p.domain === site)
-
-  // console.log(site, 'website')
 
   const data = await getSiteInfo(site as string);
   const pages = await getPages(site as string);
 
-  // res.setHeader(
-  //   'cache-control',
-  //   'public s-max-age=900 stale-with-revalidate=899'
-  // )
   return {
     props: {
       stringifiedData: JSON.stringify(data),

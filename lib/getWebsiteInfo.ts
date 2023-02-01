@@ -24,8 +24,9 @@ export const fetchSite = async (site: string) => {
 
   const SITE = `${site}_DOMAIN`;
   const DOMAIN = process.env[SITE];
+  console.log(DOMAIN);
   try {
-    return fetch(`${API_URL}/sites?filter[domains.domain_name]=${DOMAIN}`, {
+    return fetch(`${API_URL}sites?filter[domains.domain_name]=${DOMAIN}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Cache-Control": "private max-age=900 immutable",
