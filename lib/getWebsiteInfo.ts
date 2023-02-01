@@ -26,7 +26,7 @@ export const fetchSite = async (site: string) => {
   const DOMAIN = process.env[SITE];
   console.log(DOMAIN);
   try {
-    return fetch(`${API_URL}sites?filter[domains.domain_name]=${DOMAIN}`, {
+    return fetch(`${API_URL}/sites?filter[domains.domain_name]=${DOMAIN}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Cache-Control": "private max-age=900 immutable",
@@ -56,7 +56,7 @@ export const fetchPages = async (site: string) => {
     //   }
     // );
     return fetch(
-      `${API_URL}pages?filter[domain]=${DOMAIN}&filter[language_id]=1&filter[parent_id]=0&filter[page_hidden_menu]=nee&include=children`,
+      `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[language_id]=1&filter[parent_id]=0&filter[page_hidden_menu]=nee&include=children`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -131,7 +131,7 @@ export const fetchPageInfo = async (
   if (!token) throw new Error("Geen geldige token opgegeven");
   try {
     return fetch(
-      `${API_URL}sites/${siteId}/pages?filter[page_url]=${pageUrl}`,
+      `${API_URL}/sites/${siteId}/pages?filter[page_url]=${pageUrl}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
