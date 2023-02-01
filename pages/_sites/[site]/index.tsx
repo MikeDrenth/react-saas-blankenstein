@@ -86,10 +86,10 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
   if (!params) throw new Error("No path parameters found");
   const { site } = params;
 
-  const ENV_SITE = site?.replaceAll("-", "");
+  console.log(site);
 
-  const data = await getSiteInfo(ENV_SITE as string);
-  const pages = await getPages(ENV_SITE as string);
+  const data = await getSiteInfo(site as string);
+  const pages = await getPages(site as string);
 
   return {
     props: {
