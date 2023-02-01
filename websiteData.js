@@ -1,8 +1,8 @@
 export const websiteData = [
   {
-    site: 'blankensteinaanzee',
-    local: 'blankensteinaanzee.localhost',
-    live: 'boeken.blankensteinaanzee',
+    site: " 123",
+    local: "blankensteinaanzee.localhost",
+    live: "boeken.blankensteinaanzee",
     siteId: 222,
   },
   // {
@@ -10,4 +10,4 @@ export const websiteData = [
   //   local: 'uplandparcs.localhost:3000',
   //   live: 'uplandparcs.nl',
   // },
-]
+];
