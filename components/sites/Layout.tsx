@@ -1,16 +1,16 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
 
-import Menu from '@/components/Menu'
+import Menu from "@/components/Menu";
 
-import type { Meta, WithChildren } from '@/types'
-import GridLayouts from '../GridLayouts'
+import type { Meta, WithChildren } from "@/types";
+import GridLayouts from "../GridLayouts";
 
 interface LayoutProps extends WithChildren {
-  meta?: Meta
-  siteId?: string
-  subdomain?: string
+  meta?: Meta;
+  siteId?: string;
+  subdomain?: string;
 }
 
 export default function Layout({ meta, children, subdomain }: LayoutProps) {
@@ -41,7 +41,7 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
         <meta name="twitter:title" content={meta?.title} />
         <meta name="twitter:description" content={meta?.description} />
         <meta name="twitter:image" content={meta?.ogImage} />
-        {subdomain != 'demo' && <meta name="robots" content="noindex" />}
+        {subdomain != "demo" && <meta name="robots" content="noindex" />}
       </Head>
       <nav className="bg-white fixed w-full top-0 left-0 shadow-sm">
         <div className="container flex justify-center items-center mx-auto">
@@ -59,12 +59,8 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
       </nav>
       <div className="pt-20">
         <h1 className="mt-8 text-4xl text-center">{meta?.pageTitle}</h1>
-        <GridLayouts layouts={meta.layoutRows} />
-        {/* {meta.layoutRows.map(
-          ({ columns }, index) => console.log(columns, 'columns')
-          // <p key={index}>{item.columns.conn_id}</p>
-        )} */}
+        {meta?.layoutRows && <GridLayouts layouts={meta?.layoutRows} />}
       </div>
     </div>
-  )
+  );
 }

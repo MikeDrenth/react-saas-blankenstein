@@ -1,58 +1,67 @@
-import Link from 'next/link'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from "react";
 
-interface PageProps {
-  pages: []
-  language_id: number
-  page_hidden: string
-  page_hidden_menu: string
-  page_highlight: string
-  page_id: number
-  page_order: number
-  page_title: string
-  page_url: string
-  parent_id: number
-  page_menuname: string
-  site_id: number
-  type_id: 0
-  children: []
-  page: []
+interface PagesProps {
+  pages?: [];
+  language_id?: number;
+  page_hidden?: string;
+  page_hidden_menu?: string;
+  page_highlight?: string;
+  page_id?: number;
+  page_order?: number;
+  page_title?: string;
+  page_url?: string;
+  parent_id?: number;
+  page_menuname?: string;
+  site_id?: number;
+  type_id?: 0;
+  children?: [];
+  page?: [];
+  layouts?: [];
 }
 
-const DropdownMenu = ({ pages }: PageProps) => {
-  const [menuOpen, SetMenuOpen]: any = useState('')
-  const ref = useRef<any>(null)
+interface PageProps {
+  page_menuname: string;
+  page_hidden: string;
+  page_hidden_menu: string;
+  page_id: number;
+  children: [];
+  page_url: string;
+}
+
+const DropdownMenu = ({ pages }: PagesProps) => {
+  const [menuOpen, SetMenuOpen]: any = useState("");
+  const ref = useRef<any>(null);
 
   useEffect(() => {
     const openMenuHandler = (e: MouseEvent): void => {
       if (ref.current && !ref.current.contains(e.target)) {
-        SetMenuOpen('')
+        SetMenuOpen("");
       }
-    }
+    };
 
-    document.addEventListener('mousedown', openMenuHandler)
+    document.addEventListener("mousedown", openMenuHandler);
 
     return () => {
-      document.removeEventListener('mousedown', openMenuHandler)
-    }
-  }, [menuOpen])
+      document.removeEventListener("mousedown", openMenuHandler);
+    };
+  }, [menuOpen]);
 
   return (
     <div className="hidden md:flex md:ml-auto md:w-auto">
       <ul className="inline-flex ml-auto font-medium" ref={ref}>
-        {pages.map((page: PageProps) => {
+        {pages?.map((page: PageProps) => {
           // Als er geen menu naam, pagina op hidden of menu hidden aan staat, door gaan
           if (
             page.page_menuname.length === 0 ||
-            page.page_hidden === 'ja' ||
-            page.page_hidden_menu === 'ja'
+            page.page_hidden === "ja" ||
+            page.page_hidden_menu === "ja"
           )
-            return
+            return;
           return (
             <li
               key={page.page_id}
               className={`focus:bg-cyan-500 hover:bg-cyan-500 hover:text-white inline-flex cursor-pointer justify-center items-center p-3 mx-1 relative ${
-                menuOpen === page.page_id ? 'active' : ''
+                menuOpen === page.page_id ? "active" : ""
               }`}
               onClick={() => SetMenuOpen(page.page_id)}
             >
@@ -70,17 +79,17 @@ const DropdownMenu = ({ pages }: PageProps) => {
               )}
               <ul
                 className={`min-w-[10rem] dropdown shadow-md absolute top-full left-0 ${
-                  menuOpen === page.page_id ? 'show' : 'hidden'
+                  menuOpen === page.page_id ? "show" : "hidden"
                 }`}
               >
                 {page.children.map((child: PageProps) => {
                   // Als er geen menu naam, pagina op hidden of menu hidden aan staat, door gaan
                   if (
                     child.page_menuname.length === 0 ||
-                    child.page_hidden === 'ja' ||
-                    child.page_hidden_menu === 'ja'
+                    child.page_hidden === "ja" ||
+                    child.page_hidden_menu === "ja"
                   )
-                    return
+                    return;
                   return (
                     <li key={child.page_id}>
                       <a
@@ -90,11 +99,11 @@ const DropdownMenu = ({ pages }: PageProps) => {
                         {child.page_menuname}
                       </a>
                     </li>
-                  )
+                  );
                 })}
               </ul>
             </li>
-          )
+          );
         })}
       </ul>
       <button className="flex md:hidden">
@@ -109,11 +118,11 @@ const DropdownMenu = ({ pages }: PageProps) => {
         </svg>
       </button>
     </div>
-  )
-}
+  );
+};
 
-const Menu = ({ pages }: PageProps) => {
-  return <DropdownMenu pages={pages}></DropdownMenu>
-}
+const Menu = ({ pages }: PagesProps) => {
+  return <DropdownMenu pages={pages}></DropdownMenu>;
+};
 
-export default Menu
+export default Menu;

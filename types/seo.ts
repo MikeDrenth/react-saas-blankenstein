@@ -4,4 +4,7 @@ export interface Meta {
   ogImage?: string;
   ogUrl?: string;
   title?: string;
+  pageTitle?: string;
+  layoutRows?: [];
+  pages?: [];
 }

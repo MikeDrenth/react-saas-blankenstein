@@ -17,7 +17,7 @@ const API_URL = process.env.API_URL as string;
 //   }
 // }
 
-// Aan de hand van domain een website ophalen
+// // Aan de hand van domain een website ophalen
 export const fetchSite = async (site: string) => {
   const { token } = await getAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven.");
@@ -37,13 +37,25 @@ export const fetchSite = async (site: string) => {
 };
 
 // Alle pagina's ophalen aan de hand van site ID
-export const fetchPages = async (site: string, siteId: number) => {
+export const fetchPages = async (site: string) => {
   const { token } = await getAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven.");
 
+  const SITE = `${site}_DOMAIN`;
+  const DOMAIN = process.env[SITE];
+
   try {
+    // return fetch(
+    //   `${API_URL}sites/${siteId}/pages?filter[language_id]=1&filter[parent_id]=0&filter[page_hidden_menu]=nee&include=children`,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //       "Cache-Control": "private max-age=900 immutable",
+    //     },
+    //   }
+    // );
     return fetch(
-      `${API_URL}sites/${siteId}/pages?filter[language_id]=1&filter[parent_id]=0&filter[page_hidden_menu]=nee&include=children`,
+      `${API_URL}pages?filter[domain]=${DOMAIN}&filter[language_id]=1&filter[parent_id]=0&filter[page_hidden_menu]=nee&include=children`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -131,10 +143,9 @@ export const fetchPageInfo = async (
   }
 };
 
-export const getPages = async (site: string, siteId: number): Promise<void> => {
-  if (!site || !siteId)
-    throw new Error("Geen geldige site of siteId opgegeven");
-  const response = await fetchPages(site, siteId);
+export const getPages = async (site: string): Promise<void> => {
+  if (!site) throw new Error("Geen geldige site of siteId opgegeven");
+  const response = await fetchPages(site);
   const { data } = await response?.json();
 
   return data;

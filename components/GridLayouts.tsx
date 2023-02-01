@@ -1,13 +1,25 @@
-interface LayoutProps {
-  columns: []
-  margin_top: number
-  margin_bottom: number
-  padding_top: number
-  padding_bottom: number
+interface LayoutsProps {
+  layouts: [];
 }
 
-const GridLayouts = ({ layouts }) => {
-  if (!layouts || !layouts.length) return
+interface LayoutProps {
+  columns: [];
+  margin_top: string;
+  margin_bottom: string;
+  padding_top: string;
+  padding_bottom: string;
+}
+
+interface ColumnProps {
+  column_id: number;
+  col: ColProps;
+}
+
+interface ColProps {
+  column_count: number;
+}
+
+const GridLayouts = ({ layouts }: LayoutsProps) => {
   return (
     <div>
       {layouts.map(
@@ -21,7 +33,7 @@ const GridLayouts = ({ layouts }) => {
           }: LayoutProps,
           index: number
         ) => {
-          if (!columns || !columns.length) return
+          if (!columns || !columns.length) return;
           return (
             <div
               className={`container columns-${columns && columns.length} 
@@ -31,21 +43,20 @@ const GridLayouts = ({ layouts }) => {
               mb-${margin_bottom && margin_bottom}`}
               key={index}
             >
-              {columns.map((column, index) => {
-                console.log(column, 'col')
+              {columns.map((column: ColumnProps, index) => {
                 return (
                   <div key={index}>
-                    Column id {column.column_id} - Column count
-                    {column.col.column_count}
+                    Column id {column?.column_id} - Column count
+                    {column?.col.column_count}
                   </div>
-                )
+                );
               })}
             </div>
-          )
+          );
         }
       )}
     </div>
-  )
-}
+  );
+};
 
-export default GridLayouts
+export default GridLayouts;
