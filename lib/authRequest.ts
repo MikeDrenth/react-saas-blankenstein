@@ -1,3 +1,5 @@
+import { rejects } from "assert";
+
 const TOKEN_ENDPOINT = process.env.AUTH_URL as string;
 
 // Request doen om een bearer token aan te maken voor de api requests
@@ -18,12 +20,11 @@ export const getAccessToken = async (site: string) => {
       "Cache-Control": "public max-age=86400 immutable",
     },
     body: JSON.stringify(body),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return res.text().then((text) => {
-      throw new Error(text);
-    });
-  });
+  })
+    .then((respone) => {
+      if (respone.ok) {
+        return respone.json();
+      }
+    })
+    .catch((error) => console.log("Error:", error));
 };
