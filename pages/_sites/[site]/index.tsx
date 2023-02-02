@@ -39,7 +39,6 @@ import { allWebsiteData } from "@/lib/allWebsiteData";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = allWebsiteData();
-  console.log(data, "data");
   // const paths = [
   //   {
   //     params: {

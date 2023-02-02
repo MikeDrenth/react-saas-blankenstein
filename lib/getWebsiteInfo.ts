@@ -135,7 +135,6 @@ export const getSiteInfo = async (site: string): Promise<void> => {
   const response = await fetchSite(site);
   const { data } = await response?.json();
 
-  console.log(data, "data");
   return data;
 };
 

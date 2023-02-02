@@ -30,12 +30,14 @@ export default function middleware(req: NextRequest) {
       in this case, our team slug is "platformize", thus *.platformize.vercel.app works. Do note that you'll
       still need to add "*.platformize.vercel.app" as a wildcard domain on your Vercel dashboard. */
   const currentHost =
-    process.env.NODE_ENV === "production" && process.env.VERCEL === "1"
+    process.env.NODE_ENV !== "development"
       ? hostname
           .replace(`.vercel.pub`, "")
           .replace(`.platformize.vercel.app`, "")
       : hostname.replace(`.localhost:3000`, "");
   // rewrites for app pages
+
+  console.log(currentHost);
 
   if (currentHost == "app") {
     if (
