@@ -1,3 +1,4 @@
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
@@ -6,19 +7,21 @@ export const config = {
      * Match all paths except for:
      * 1. /api routes
      * 2. /_next (Next.js internals)
-     * 3. /fonts (inside /public)
-     * 4. /examples (inside /public)
-     * 5. all root files inside /public (e.g. /favicon.ico)
+     * 3. /examples (inside /public)
+     * 4. all root files inside /public (e.g. /favicon.ico)
      */
-    "/((?!api|_next|fonts|examples|[\\w-]+\\.\\w+).*)",
+    "/((?!api/|_next/|_static/|examples/|[\\w-]+\\.\\w+).*)",
   ],
 };
 
-export default function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
   const hostname = req.headers.get("host") || "demo.vercel.pub";
+
+  // Get the pathname of the request (e.g. /, /about, /blog/first-post)
+  const path = url.pathname;
 
   // Only for demo purposes - remove this if you want to use your root domain as the landing page
   if (hostname === "vercel.pub" || hostname === "platforms.vercel.app") {
@@ -30,15 +33,13 @@ export default function middleware(req: NextRequest) {
       in this case, our team slug is "platformize", thus *.platformize.vercel.app works. Do note that you'll
       still need to add "*.platformize.vercel.app" as a wildcard domain on your Vercel dashboard. */
   const currentHost =
-    process.env.NODE_ENV !== "development"
+    process.env.NODE_ENV === "production" && process.env.VERCEL === "1"
       ? hostname
           .replace(`.vercel.pub`, "")
           .replace(`.platformize.vercel.app`, "")
       : hostname.replace(`.localhost:3000`, "");
+
   // rewrites for app pages
-
-  console.log(currentHost);
-
   if (currentHost == "app") {
     if (
       url.pathname === "/login" &&
@@ -55,13 +56,11 @@ export default function middleware(req: NextRequest) {
 
   // rewrite root application to `/home` folder
   if (hostname === "localhost:3000" || hostname === "platformize.vercel.app") {
-    url.pathname = `/home${url.pathname}`;
-
-    return NextResponse.rewrite(url);
+    return NextResponse.rewrite(new URL(`/home${path}`, req.url));
   }
 
   // rewrite everything else to `/_sites/[site] dynamic route
-  url.pathname = `/_sites/${currentHost}${url.pathname}`;
-
-  return NextResponse.rewrite(url);
+  return NextResponse.rewrite(
+    new URL(`/_sites/${currentHost}${path}`, req.url)
+  );
 }
