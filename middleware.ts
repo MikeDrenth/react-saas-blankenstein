@@ -34,9 +34,7 @@ export default async function middleware(req: NextRequest) {
       still need to add "*.platformize.vercel.app" as a wildcard domain on your Vercel dashboard. */
   const currentHost =
     process.env.NODE_ENV === "production" && process.env.VERCEL === "1"
-      ? hostname
-          .replace(`.vercel.pub`, "")
-          .replace(`.platformize.vercel.app`, "")
+      ? hostname.replace(`.vercel.app`, "")
       : hostname.replace(`.localhost:3000`, "");
 
   console.log(process.env.NODE_ENV, "node_env");
