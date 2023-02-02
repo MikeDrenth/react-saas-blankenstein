@@ -95,7 +95,7 @@ const fetchLayouts = async (site: string, pageUrl: string) => {
   }
 };
 
-export const getPages = async (site: string): Promise<void> => {
+export const getPages = async (site: string) => {
   if (!site) throw new Error("Geen geldige site of siteId opgegeven");
   const response = await fetchPages(site);
   const { data } = await response?.json();
@@ -103,7 +103,7 @@ export const getPages = async (site: string): Promise<void> => {
   return data;
 };
 
-export const getSiteInfo = async (site: string): Promise<void> => {
+export const getSiteInfo = async (site: string) => {
   if (!site) throw new Error("Geen geldige site opgegeven");
   const response = await fetchSite(site);
   const { data } = await response?.json();

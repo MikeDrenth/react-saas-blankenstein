@@ -83,8 +83,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!params) throw new Error("No path parameters found");
   const { site, slug } = params;
 
-  console.log(params);
-
   // Site info ophalen, deze is nodig voor de site id adhv de website
   // Deze is nodig voor het ophalen van de layouts of andere pagina informatie
   const pages = await getPages(site);
