@@ -39,6 +39,7 @@ export default async function middleware(req: NextRequest) {
           .replace(`.platformize.vercel.app`, "")
       : hostname.replace(`.localhost:3000`, "");
 
+  console.log(currentHost, "Curenthost check in middleware");
   // rewrites for app pages
   if (currentHost == "app") {
     if (

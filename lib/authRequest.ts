@@ -7,7 +7,7 @@ export const getAccessToken = async (site: string) => {
   if (!site) throw new Error("Geen geldige website opgegeven.");
 
   // De juiste user info ophalen in lokaal env bestand
-  const ENV_SITE = site.replaceAll("-", "");
+  const ENV_SITE = site?.replace(/-/g, "");
   const AUTH_USER = `${ENV_SITE}_AUTH_USERNAME`;
   const AUTH_PASSWORD = `${ENV_SITE}_AUTH_PASSWORD`;
   const body = {
