@@ -1,14 +1,9 @@
 import Layout from "@/components/sites/Layout";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 import type { GetStaticPaths, GetStaticProps } from "next";
 import type { _SiteData, Meta } from "@/types";
 import { getSiteInfo, getPages } from "@/lib/getWebsiteInfo";
-
-interface PathProps {
-  site: string;
-}
 
 interface IndexProps {
   stringifiedData: string;
@@ -86,6 +81,7 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
   if (!params) throw new Error("No path parameters found");
   const { site } = params;
 
+  // const ENV_SITE = site.replace(/-/g, "");
   const data = await getSiteInfo(site as string);
   const pages = await getPages(site as string);
 
