@@ -37,9 +37,6 @@ export default async function middleware(req: NextRequest) {
       ? hostname.replace(`.vercel.app`, "")
       : hostname.replace(`.localhost:3000`, "");
 
-  console.log(process.env.NODE_ENV, "node_env");
-  console.log(process.env.VERCEL, "Vercel");
-  console.log(currentHost, "Curenthost check in middleware");
   // rewrites for app pages
   if (currentHost == "app") {
     if (

@@ -39,40 +39,11 @@ import { allWebsiteData } from "@/lib/allWebsiteData";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = allWebsiteData();
-  // const paths = [
-  //   {
-  //     params: {
-  //       site: 'blankensteinaanzee.localhost:3000',
-  //       local: 'blankensteinaanzee.localhost:3000',
-  //       live: 'blankensteinaanzee.localhost:3000',
-  //     },
-  //   },
-  //   {
-  //     params: {
-  //       site: 'uplandparcs.localhost:3000',
-  //       local: 'uplandparcs.localhost:3000',
-  //       live: 'uplandparcs.localhost:3000',
-  //     },
-  //   },
-  // ]
+
   return {
     paths: data,
     fallback: "blocking",
   };
-
-  // const paths = data.comments.map((comment) => {
-  //   return {
-  //     params: {
-  //       postId: comment.postId,
-  //       commentId: comment.id
-  //     }
-  //   }
-  // });
-
-  // return {
-  //   paths,
-  //   fallback: false
-  // }
 };
 
 export const getStaticProps: GetStaticProps<IndexProps> = async ({
