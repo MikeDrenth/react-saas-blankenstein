@@ -39,6 +39,7 @@ import { allWebsiteData } from "@/lib/allWebsiteData";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = allWebsiteData();
+  console.log(data, "data");
   // const paths = [
   //   {
   //     params: {
@@ -81,7 +82,6 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
   if (!params) throw new Error("No path parameters found");
   const { site } = params;
 
-  // const ENV_SITE = site.replace(/-/g, "");
   const data = await getSiteInfo(site as string);
   const pages = await getPages(site as string);
 

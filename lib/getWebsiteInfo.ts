@@ -22,7 +22,8 @@ export const fetchSite = async (site: string) => {
   const { token } = await getAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven.");
 
-  const SITE = `${site}_DOMAIN`;
+  const ENV_SITE = site?.replace(/-/g, "");
+  const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
   try {
     return fetch(`${API_URL}/sites?filter[domains.domain_name]=${DOMAIN}`, {
@@ -41,7 +42,8 @@ export const fetchPages = async (site: string) => {
   const { token } = await getAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven.");
 
-  const SITE = `${site}_DOMAIN`;
+  const ENV_SITE = site?.replace(/-/g, "");
+  const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
 
   try {
@@ -133,6 +135,7 @@ export const getSiteInfo = async (site: string): Promise<void> => {
   const response = await fetchSite(site);
   const { data } = await response?.json();
 
+  console.log(data, "data");
   return data;
 };
 
