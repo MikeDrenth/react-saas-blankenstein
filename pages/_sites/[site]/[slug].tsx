@@ -60,11 +60,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const pages = async () => {
     const allPages = data.map(async ({ params }) => {
       const site = params.site;
-      const siteInfo = await getSiteInfo(site as string);
-      if (typeof siteInfo === typeof undefined) return;
+      if (!site) return;
       const pages = await getPages(site);
-      return pages?.map((pages: PagesProps) => ({
-        params: { site: site, slug: pages?.page_url },
+      if (!pages) return;
+      return pages?.map((page: PagesProps) => ({
+        params: { site: site, slug: page.page_url },
       }));
     });
 
@@ -75,7 +75,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: paths[0],
-    fallback: "blocking",
+    fallback: true,
   };
 };
 
@@ -85,8 +85,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   // Site info ophalen, deze is nodig voor de site id adhv de website
   // Deze is nodig voor het ophalen van de layouts of andere pagina informatie
-  const pages = await getPages(site);
-  const pageInfo = await getPageInfo(site, slug);
+  const pages = await getPages(site as string);
+  const pageInfo = await getPageInfo(site as string, slug as string);
 
   return {
     props: {
