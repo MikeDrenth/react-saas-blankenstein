@@ -9,4 +9,9 @@ export const websiteData = [
     local: "blankensteinaanzee.localhost",
     live: "boeken.blankensteinaanzee",
   },
+  {
+    site: "nextjssaaswoad",
+    local: "blankensteinaanzee.localhost",
+    live: "boeken.blankensteinaanzee",
+  },
 ];
