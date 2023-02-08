@@ -9,6 +9,8 @@ export const fetchSite = async (site: string) => {
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
+
+  console.log("FETCH: SITE");
   try {
     return fetch(`${API_URL}/sites?filter[domains.domain_name]=${DOMAIN}`, {
       headers: {
@@ -29,6 +31,8 @@ export const fetchPages = async (site: string) => {
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
+
+  console.log("FETCH: PAGES");
 
   try {
     return fetch(
@@ -54,6 +58,8 @@ export const fetchPageInfo = async (site: string, pageUrl: string) => {
   const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
 
+  console.log("FETCH: PAGE INFO");
+
   try {
     return fetch(
       `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[page_url]=${pageUrl}`,
@@ -75,6 +81,7 @@ const fetchLayouts = async (site: string, pageUrl: string) => {
     const ENV_SITE = site?.replace(/-/g, "");
     const SITE = `${ENV_SITE}_DOMAIN`;
     const DOMAIN = process.env[SITE];
+    console.log("FETCH: PAGE LAYOUT");
     const response = await fetch(
       `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[page_url]=${pageUrl}&include=layoutRows.columns.col`,
       {

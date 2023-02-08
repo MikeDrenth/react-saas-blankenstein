@@ -14,6 +14,9 @@ export const getAccessToken = async (site: string) => {
     user: process.env[AUTH_USER],
     password: process.env[AUTH_PASSWORD],
   };
+
+  console.log("API KEY TEST ENDPOINT LOGIN");
+
   return await fetch(TOKEN_ENDPOINT, {
     method: "POST",
     headers: {
