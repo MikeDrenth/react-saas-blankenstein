@@ -1,6 +1,5 @@
 import Layout from "@/components/sites/Layout";
 import { useRouter } from "next/router";
-import { NextApiRequest } from "next";
 
 import type { GetStaticPaths, GetStaticProps } from "next";
 import type { _SiteData, Meta } from "@/types";
@@ -47,26 +46,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<IndexProps> = async (context) => {
-  if (!context) throw new Error("No path parameters found");
-  const site = context?.params?.site;
-  const env = process.env.NODE_ENV;
+export const getStaticProps: GetStaticProps<IndexProps> = async ({
+  params,
+}) => {
+  if (!params) throw new Error("No path parameters found");
+  const { site } = params;
 
-  let res;
-  let response: Record<string, string> = {};
-
-  if (env === "production") {
-    console.log(context);
-    res = await fetch("https://nextjs-saas-delta.vercel.app/api/tokenHandler");
-    response = await res.json();
-  } else {
-    res = await fetch("http://localhost:3000/api/tokenHandler");
-    response = await res.json();
-  }
-
-  const token = response.token;
-  const data = await getSiteInfo(site as string, token);
-  const pages = await getPages(site as string, token);
+  const data = await getSiteInfo(site as string);
+  const pages = await getPages(site as string);
 
   return {
     props: {
