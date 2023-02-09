@@ -1,6 +1,7 @@
-import { rejects } from "assert";
+import NodeCache from "node-cache";
 
 const TOKEN_ENDPOINT = process.env.AUTH_URL as string;
+const cache = new NodeCache({ stdTTL: 60 * 60 }); // cache opgeslagen voor 1 uur
 
 // Request doen om een bearer token aan te maken voor de api requests
 export const getAccessToken = async (site: string) => {
@@ -14,6 +15,12 @@ export const getAccessToken = async (site: string) => {
     user: process.env[AUTH_USER],
     password: process.env[AUTH_PASSWORD],
   };
+
+  const token = cache.get(site);
+  if (token) {
+    return token;
+  }
+
   return await fetch(TOKEN_ENDPOINT, {
     method: "POST",
     headers: {
@@ -24,7 +31,10 @@ export const getAccessToken = async (site: string) => {
   })
     .then((respone) => {
       if (respone.ok) {
-        return respone.json();
+        return respone.json().then((data) => {
+          cache.set(site, data.token);
+          return data.token;
+        });
       }
     })
     .catch((error) => console.log("Error:", error));
