@@ -2,8 +2,7 @@ import { getAccessToken } from "./authRequest";
 const API_URL = process.env.API_URL as string;
 
 // // Aan de hand van domain een website ophalen
-export const fetchSite = async (site: string) => {
-  const { token } = await getAccessToken(site);
+export const fetchSite = async (site: string, token: string) => {
   if (!token) throw new Error("Geen geldige token opgegeven.");
 
   const ENV_SITE = site?.replace(/-/g, "");
@@ -104,9 +103,9 @@ export const getPages = async (site: string, token: string) => {
   return data;
 };
 
-export const getSiteInfo = async (site: string) => {
+export const getSiteInfo = async (site: string, token: string) => {
   if (!site) throw new Error("Geen geldige site opgegeven");
-  const response = await fetchSite(site);
+  const response = await fetchSite(site, token);
   const { data } = await response?.json();
 
   return data;

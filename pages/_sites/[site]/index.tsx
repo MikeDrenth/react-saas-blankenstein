@@ -52,8 +52,10 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
   if (!params) throw new Error("No path parameters found");
   const { site } = params;
 
-  const data = await getSiteInfo(site as string);
-  const pages = await getPages(site as string);
+  const res = await fetch("http://localhost:3000/api/tokenHandler");
+  const { token } = await res.json();
+  const data = await getSiteInfo(site as string, token);
+  const pages = await getPages(site as string, token);
 
   return {
     props: {
