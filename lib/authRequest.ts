@@ -14,11 +14,11 @@ export const getAccessToken = async (site: string) => {
     user: process.env[AUTH_USER],
     password: process.env[AUTH_PASSWORD],
   };
-
   return await fetch(TOKEN_ENDPOINT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Cache-Control": "public max-age=86400 immutable",
     },
     body: JSON.stringify(body),
   })
