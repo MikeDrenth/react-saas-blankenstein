@@ -2,7 +2,8 @@ import { getAccessToken } from "./authRequest";
 const API_URL = process.env.API_URL as string;
 
 // // Aan de hand van domain een website ophalen
-export const fetchSite = async (site: string, token: string) => {
+export const fetchSite = async (site: string) => {
+  const token = await getAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven.");
 
   const ENV_SITE = site?.replace(/-/g, "");
@@ -22,8 +23,9 @@ export const fetchSite = async (site: string, token: string) => {
 };
 
 // Alle pagina's ophalen aan de hand van site ID
-export const fetchPages = async (site: string, token: string) => {
-  // const { token } = await getAccessToken(site);
+export const fetchPages = async (site: string) => {
+  const token = await getAccessToken(site);
+  console.log(token, "dit is te token dan hoor");
   if (!token) throw new Error("Geen geldige token opgegeven.");
 
   const ENV_SITE = site?.replace(/-/g, "");
@@ -47,7 +49,7 @@ export const fetchPages = async (site: string, token: string) => {
 
 // Pagina info opzoeken aan de hand van pagina url
 export const fetchPageInfo = async (site: string, pageUrl: string) => {
-  const { token } = await getAccessToken(site);
+  const token = await getAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven");
 
   const ENV_SITE = site?.replace(/-/g, "");
@@ -71,7 +73,7 @@ export const fetchPageInfo = async (site: string, pageUrl: string) => {
 
 const fetchLayouts = async (site: string, pageUrl: string) => {
   try {
-    const { token } = await getAccessToken(site);
+    const token = await getAccessToken(site);
     const ENV_SITE = site?.replace(/-/g, "");
     const SITE = `${ENV_SITE}_DOMAIN`;
     const DOMAIN = process.env[SITE];
@@ -95,17 +97,17 @@ const fetchLayouts = async (site: string, pageUrl: string) => {
   }
 };
 
-export const getPages = async (site: string, token: string) => {
+export const getPages = async (site: string) => {
   if (!site) throw new Error("Geen geldige site of siteId opgegeven");
-  const response = await fetchPages(site, token);
+  const response = await fetchPages(site);
   const { data } = await response?.json();
 
   return data;
 };
 
-export const getSiteInfo = async (site: string, token: string) => {
+export const getSiteInfo = async (site: string) => {
   if (!site) throw new Error("Geen geldige site opgegeven");
-  const response = await fetchSite(site, token);
+  const response = await fetchSite(site);
   const { data } = await response?.json();
 
   return data;

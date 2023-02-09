@@ -51,8 +51,6 @@ import {
   getPageInfo,
 } from "@/lib/getWebsiteInfo";
 
-import tokenHandler from "@/lib/tokenHandler";
-
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = allWebsiteData();
 
@@ -63,8 +61,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const allPages = data.map(async ({ params }) => {
       const site = params.site;
       if (!site) return;
-      const { token } = await tokenHandler(site);
-      const pages = await getPages(site, token);
+      const pages = await getPages(site);
       if (!pages) return;
       return pages?.map((page: PagesProps) => ({
         params: { site: site, slug: page.page_url },
@@ -88,8 +85,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   // Site info ophalen, deze is nodig voor de site id adhv de website
   // Deze is nodig voor het ophalen van de layouts of andere pagina informatie
-  const { token } = await tokenHandler(site as string);
-  const pages = await getPages(site as string, token);
+  const pages = await getPages(site as string);
   const pageInfo = await getPageInfo(site as string, slug as string);
 
   return {
