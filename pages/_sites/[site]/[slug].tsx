@@ -48,6 +48,7 @@ import { getPages, getPageInfo } from "@/lib/getWebsiteInfo";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = allWebsiteData();
+  const env = process.env.NODE_ENV;
 
   // Hieronder worden alle pagina's ophaald van website's binenn het project
   // Deze zijn nodig voor bij de build, dit zorgt voor een sneller load
@@ -55,9 +56,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const pages = async () => {
     const allPages = data.map(async ({ params }) => {
       const site = params.site;
-      const res = await fetch("http://localhost:3000/api/tokenHandler");
-      const { token } = await res.json();
-      console.log(token, "in de pagina");
+      let res;
+      let response: Record<string, string> = {};
+
+      if (env === "production") {
+        res = await fetch("http://localhost:3000/api/tokenHandler");
+        response = await res.json();
+      } else {
+        res = await fetch("http://localhost:3000/api/tokenHandler");
+        response = await res.json();
+      }
+
+      const token = response.token;
       if (!site) return;
       const pages = await getPages(site, token);
       if (!pages) return;
@@ -80,11 +90,21 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!params) throw new Error("No path parameters found");
   const { site, slug } = params;
+  const env = process.env.NODE_ENV;
 
   // Site info ophalen, deze is nodig voor de site id adhv de website
   // Deze is nodig voor het ophalen van de layouts of andere pagina informatie
-  const res = await fetch("http://localhost:3000/api/tokenHandler");
-  const { token } = await res.json();
+  let res;
+  let response: Record<string, string> = {};
+
+  if (env === "production") {
+    res = await fetch("http://localhost:3000/api/tokenHandler");
+    response = await res.json();
+  } else {
+    res = await fetch("http://localhost:3000/api/tokenHandler");
+    response = await res.json();
+  }
+  const token = response.token;
   const pages = await getPages(site as string, token);
   const pageInfo = await getPageInfo(site as string, slug as string);
 
