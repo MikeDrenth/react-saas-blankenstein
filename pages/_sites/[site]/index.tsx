@@ -57,8 +57,8 @@ export const getStaticProps: GetStaticProps<IndexProps> = async (context) => {
 
   if (env === "production") {
     console.log(context);
-    res = await fetch("http://localhost:3000/api/tokenHandler");
-    response = await res.json();
+    // res = await fetch("http://localhost:3000/api/tokenHandler");
+    // response = await res.json();
   } else {
     res = await fetch("http://localhost:3000/api/tokenHandler");
     response = await res.json();
