@@ -57,7 +57,7 @@ export const getStaticProps: GetStaticProps<IndexProps> = async (context) => {
 
   if (env === "production") {
     console.log(context);
-    res = await fetch(window.location.origin + "/api/tokenHandler");
+    res = await fetch("https://nextjs-saas-delta.vercel.app/api/tokenHandler");
     response = await res.json();
   } else {
     res = await fetch("http://localhost:3000/api/tokenHandler");
