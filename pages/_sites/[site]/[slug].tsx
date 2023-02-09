@@ -60,8 +60,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
       let response: Record<string, string> = {};
 
       if (env === "production") {
-        // res = await fetch("http://localhost:3000/api/tokenHandler");
-        // response = await res.json();
+        res = await fetch(
+          "https://nextjs-saas-mikedrenth.vercel.app/api/tokenHandler"
+        );
+        response = await res.json();
       } else {
         res = await fetch("http://localhost:3000/api/tokenHandler");
         response = await res.json();
