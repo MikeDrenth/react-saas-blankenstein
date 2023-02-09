@@ -10,7 +10,6 @@ export const fetchSite = async (site: string) => {
   const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
 
-  console.log("FETCH: SITE");
   try {
     return fetch(`${API_URL}/sites?filter[domains.domain_name]=${DOMAIN}`, {
       headers: {
@@ -24,15 +23,13 @@ export const fetchSite = async (site: string) => {
 };
 
 // Alle pagina's ophalen aan de hand van site ID
-export const fetchPages = async (site: string) => {
-  const { token } = await getAccessToken(site);
+export const fetchPages = async (site: string, token: string) => {
+  // const { token } = await getAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven.");
 
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
-
-  console.log("FETCH: PAGES");
 
   try {
     return fetch(
@@ -58,8 +55,6 @@ export const fetchPageInfo = async (site: string, pageUrl: string) => {
   const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
 
-  console.log("FETCH: PAGE INFO");
-
   try {
     return fetch(
       `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[page_url]=${pageUrl}`,
@@ -81,7 +76,6 @@ const fetchLayouts = async (site: string, pageUrl: string) => {
     const ENV_SITE = site?.replace(/-/g, "");
     const SITE = `${ENV_SITE}_DOMAIN`;
     const DOMAIN = process.env[SITE];
-    console.log("FETCH: PAGE LAYOUT");
     const response = await fetch(
       `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[page_url]=${pageUrl}&include=layoutRows.columns.col`,
       {
@@ -102,9 +96,9 @@ const fetchLayouts = async (site: string, pageUrl: string) => {
   }
 };
 
-export const getPages = async (site: string) => {
+export const getPages = async (site: string, token: string) => {
   if (!site) throw new Error("Geen geldige site of siteId opgegeven");
-  const response = await fetchPages(site);
+  const response = await fetchPages(site, token);
   const { data } = await response?.json();
 
   return data;

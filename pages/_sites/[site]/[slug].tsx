@@ -44,12 +44,7 @@ export default function Post({ stringifiedPages, stringifiedData }: PostProps) {
 }
 
 import { allWebsiteData } from "@/lib/allWebsiteData";
-import {
-  getSiteInfo,
-  getPages,
-  getLayouts,
-  getPageInfo,
-} from "@/lib/getWebsiteInfo";
+import { getPages, getPageInfo } from "@/lib/getWebsiteInfo";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = allWebsiteData();
@@ -60,8 +55,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const pages = async () => {
     const allPages = data.map(async ({ params }) => {
       const site = params.site;
+      const res = await fetch("http://localhost:3000/api/tokenHandler");
+      const { token } = await res.json();
+      console.log(token, "in de pagina");
       if (!site) return;
-      const pages = await getPages(site);
+      const pages = await getPages(site, token);
       if (!pages) return;
       return pages?.map((page: PagesProps) => ({
         params: { site: site, slug: page.page_url },
@@ -85,7 +83,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   // Site info ophalen, deze is nodig voor de site id adhv de website
   // Deze is nodig voor het ophalen van de layouts of andere pagina informatie
-  const pages = await getPages(site as string);
+  const res = await fetch("http://localhost:3000/api/tokenHandler");
+  const { token } = await res.json();
+  const pages = await getPages(site as string, token);
   const pageInfo = await getPageInfo(site as string, slug as string);
 
   return {

@@ -15,13 +15,10 @@ export const getAccessToken = async (site: string) => {
     password: process.env[AUTH_PASSWORD],
   };
 
-  console.log("API KEY TEST ENDPOINT LOGIN");
-
   return await fetch(TOKEN_ENDPOINT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Cache-Control": "public max-age=86400 immutable",
     },
     body: JSON.stringify(body),
   })
