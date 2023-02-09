@@ -10,7 +10,8 @@ const tokenHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
       storedToken = null;
-    }, 1000 * 60 * 60); // refresh every hours
+    }, 1000 * 60 * 60); // refresh every hour
+    console.log("Hier kom ik 1x per uur in");
   }
 
   console.log(storedToken, "tokenHandler");
