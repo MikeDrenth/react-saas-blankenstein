@@ -1,9 +1,9 @@
-import { getAccessToken, cacheAccessToken } from "./authRequest";
+import { cacheAccessToken } from "./authRequest";
 const API_URL = process.env.API_URL as string;
 
 // // Aan de hand van domain een website ophalen
 export const fetchSite = async (site: string) => {
-  const { token } = await getAccessToken(site);
+  const token = await cacheAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven.");
 
   const ENV_SITE = site?.replace(/-/g, "");
@@ -25,7 +25,7 @@ export const fetchSite = async (site: string) => {
 
 // Alle pagina's ophalen aan de hand van site ID
 export const fetchPages = async (site: string) => {
-  const { token } = await cacheAccessToken(site);
+  const token = await cacheAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven.");
 
   const ENV_SITE = site?.replace(/-/g, "");
@@ -51,7 +51,7 @@ export const fetchPages = async (site: string) => {
 
 // Pagina info opzoeken aan de hand van pagina url
 export const fetchPageInfo = async (site: string, pageUrl: string) => {
-  const { token } = await getAccessToken(site);
+  const token = await cacheAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven");
 
   const ENV_SITE = site?.replace(/-/g, "");
@@ -77,7 +77,7 @@ export const fetchPageInfo = async (site: string, pageUrl: string) => {
 
 const fetchLayouts = async (site: string, pageUrl: string) => {
   try {
-    const { token } = await getAccessToken(site);
+    const token = await cacheAccessToken(site);
     const ENV_SITE = site?.replace(/-/g, "");
     const SITE = `${ENV_SITE}_DOMAIN`;
     const DOMAIN = process.env[SITE];
