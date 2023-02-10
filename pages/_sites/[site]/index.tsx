@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 import type { GetStaticPaths, GetStaticProps } from "next";
 import type { _SiteData, Meta } from "@/types";
-import { getSiteInfo, getPages } from "@/lib/getWebsiteInfo";
+import { getPages } from "@/lib/getWebsiteInfo";
 
 interface IndexProps {
   stringifiedData: string;

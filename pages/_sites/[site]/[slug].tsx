@@ -44,12 +44,7 @@ export default function Post({ stringifiedPages, stringifiedData }: PostProps) {
 }
 
 import { allWebsiteData } from "@/lib/allWebsiteData";
-import {
-  getSiteInfo,
-  getPages,
-  getLayouts,
-  getPageInfo,
-} from "@/lib/getWebsiteInfo";
+import { getPages, getPageInfo } from "@/lib/getWebsiteInfo";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = allWebsiteData();
