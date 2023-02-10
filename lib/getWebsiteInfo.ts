@@ -1,32 +1,10 @@
 import { cacheAccessToken } from "./authRequest";
 const API_URL = process.env.API_URL as string;
 
-// // Aan de hand van domain een website ophalen
-export const fetchSite = async (site: string) => {
-  const token = await cacheAccessToken(site);
-  if (!token) throw new Error("Geen geldige token opgegeven.");
-
-  const ENV_SITE = site?.replace(/-/g, "");
-  const SITE = `${ENV_SITE}_DOMAIN`;
-  const DOMAIN = process.env[SITE];
-
-  console.log("FETCH: SITE");
-  try {
-    return fetch(`${API_URL}/sites?filter[domains.domain_name]=${DOMAIN}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Cache-Control": "public max-age=900 immutable",
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 // Alle pagina's ophalen aan de hand van site ID
 export const fetchPages = async (site: string) => {
   const token = await cacheAccessToken(site);
-  if (!token) throw new Error("Geen geldige token opgegeven.");
+  if (!token) throw new Error("Geen geldige token opgegeven. (FetchPages)");
 
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
@@ -52,7 +30,7 @@ export const fetchPages = async (site: string) => {
 // Pagina info opzoeken aan de hand van pagina url
 export const fetchPageInfo = async (site: string, pageUrl: string) => {
   const token = await cacheAccessToken(site);
-  if (!token) throw new Error("Geen geldige token opgegeven");
+  if (!token) throw new Error("Geen geldige token opgegeven, FetchPageInfo");
 
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
@@ -105,14 +83,6 @@ const fetchLayouts = async (site: string, pageUrl: string) => {
 export const getPages = async (site: string) => {
   if (!site) throw new Error("Geen geldige site of siteId opgegeven");
   const response = await fetchPages(site);
-  const { data } = await response?.json();
-
-  return data;
-};
-
-export const getSiteInfo = async (site: string) => {
-  if (!site) throw new Error("Geen geldige site opgegeven");
-  const response = await fetchSite(site);
   const { data } = await response?.json();
 
   return data;
