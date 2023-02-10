@@ -1,4 +1,4 @@
-import { getAccessToken } from "./authRequest";
+import { getAccessToken, cacheAccessToken } from "./authRequest";
 const API_URL = process.env.API_URL as string;
 
 // // Aan de hand van domain een website ophalen
@@ -25,7 +25,7 @@ export const fetchSite = async (site: string) => {
 
 // Alle pagina's ophalen aan de hand van site ID
 export const fetchPages = async (site: string) => {
-  const { token } = await getAccessToken(site);
+  const { token } = await cacheAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven.");
 
   const ENV_SITE = site?.replace(/-/g, "");
