@@ -7,6 +7,14 @@ const cache = new NodeCache({ stdTTL: 60 * 60 }); // cache opgeslagen voor 1 uur
 export const getAccessToken = async (site: string) => {
   if (!site) throw new Error("Geen geldige website opgegeven.");
 
+  // Check if the token is in cache
+  const cachedToken = cache.get(site);
+  if (cachedToken) {
+    return cachedToken;
+  }
+
+  console.log(cachedToken, " asdasdasd");
+
   // De juiste user info ophalen in lokaal env bestand
   const ENV_SITE = site?.replace(/-/g, "");
   const AUTH_USER = `${ENV_SITE}_AUTH_USERNAME`;
@@ -27,22 +35,9 @@ export const getAccessToken = async (site: string) => {
 
   if (response.ok) {
     const data = await response.json();
-    return data;
+    cache.set(site, data.token); // cache the token
+    return data.token;
   } else {
     console.log("Error:", response.statusText);
   }
-};
-
-export const cacheAccessToken = async (site: string) => {
-  const cachedToken = cache.get("testkey");
-  if (cachedToken) {
-    console.log("Found token in cache: ", cachedToken);
-    return cachedToken;
-  }
-
-  console.log("Token not found in cache, making API call.");
-  const { token } = await getAccessToken(site);
-  console.log("Setting token in cache: ", token);
-  cache.set("testkey", token);
-  return token;
 };
