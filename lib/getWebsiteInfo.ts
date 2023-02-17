@@ -1,10 +1,24 @@
 import { getAccessToken, cacheAccessToken } from "./authRequest";
 const API_URL = process.env.API_URL as string;
 
+interface AccessToken {
+  token: string;
+}
+
+let accessToken: AccessToken | null = null;
+
+let getAccessTokenAndCache = async (site: string) => {
+  accessToken = await getAccessToken(site);
+
+  if (!accessToken)
+    throw new Error("accessToken: Geen geldige token opgegeven.");
+};
+
 // // Aan de hand van domain een website ophalen
 export const fetchSite = async (site: string) => {
-  const token = await getAccessToken(site);
-  if (!token) throw new Error("fetchSite: Geen geldige token opgegeven.");
+  // const token = await getAccessToken(site);
+  if (!accessToken) await getAccessTokenAndCache(site);
+  // if (!token) throw new Error("fetchSite: Geen geldige token opgegeven.");
 
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
@@ -13,7 +27,7 @@ export const fetchSite = async (site: string) => {
   try {
     return fetch(`${API_URL}/sites?filter[domains.domain_name]=${DOMAIN}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken?.token}`,
         "Cache-Control": "public max-age=900 immutable",
       },
     });
@@ -24,9 +38,10 @@ export const fetchSite = async (site: string) => {
 
 // Alle pagina's ophalen aan de hand van site ID
 export const fetchPages = async (site: string) => {
-  const token = await cacheAccessToken(site);
+  // const token = await cacheAccessToken(site);
+  if (!accessToken) await getAccessTokenAndCache(site);
 
-  if (!token) throw new Error("fetchPages: Geen geldige token opgegeven.");
+  // if (!token) throw new Error("fetchPages: Geen geldige token opgegeven.");
 
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
@@ -37,7 +52,7 @@ export const fetchPages = async (site: string) => {
       `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[language_id]=1&filter[parent_id]=0&filter[page_hidden_menu]=nee&include=children`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken?.token}`,
           "Cache-Control": "private max-age=900 immutable",
         },
       }
