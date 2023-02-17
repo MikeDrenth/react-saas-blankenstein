@@ -4,7 +4,7 @@ const API_URL = process.env.API_URL as string;
 // // Aan de hand van domain een website ophalen
 export const fetchSite = async (site: string) => {
   const token = await getAccessToken(site);
-  if (!token) throw new Error("Geen geldige token opgegeven.");
+  if (!token) throw new Error("fetchSite: Geen geldige token opgegeven.");
 
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
@@ -24,8 +24,9 @@ export const fetchSite = async (site: string) => {
 
 // Alle pagina's ophalen aan de hand van site ID
 export const fetchPages = async (site: string) => {
-  const { token } = await cacheAccessToken(site);
-  if (!token) throw new Error("Geen geldige token opgegeven.");
+  const token = await cacheAccessToken(site);
+
+  if (!token) throw new Error("fetchPages: Geen geldige token opgegeven.");
 
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
@@ -49,7 +50,7 @@ export const fetchPages = async (site: string) => {
 // Pagina info opzoeken aan de hand van pagina url
 export const fetchPageInfo = async (site: string, pageUrl: string) => {
   const { token } = await getAccessToken(site);
-  if (!token) throw new Error("Geen geldige token opgegeven");
+  if (!token) throw new Error("fetchPageInfo: Geen geldige token opgegeven");
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
@@ -96,7 +97,7 @@ const fetchLayouts = async (site: string, pageUrl: string) => {
 };
 
 export const getPages = async (site: string) => {
-  if (!site) throw new Error("Geen geldige site of siteId opgegeven");
+  if (!site) throw new Error("getPages: Geen geldige site of siteId opgegeven");
   const response = await fetchPages(site);
   const { data } = await response?.json();
 
@@ -104,7 +105,7 @@ export const getPages = async (site: string) => {
 };
 
 export const getSiteInfo = async (site: string) => {
-  if (!site) throw new Error("Geen geldige site opgegeven");
+  if (!site) throw new Error("getSiteInfo: Geen geldige site opgegeven");
   const response = await fetchSite(site);
   const { data } = await response?.json();
 
@@ -113,7 +114,9 @@ export const getSiteInfo = async (site: string) => {
 
 export const getPageInfo = async (site: string, pageUrl: string) => {
   if (!site || !pageUrl)
-    throw new Error("Geen geldige site, siteId of pageId opgegeven");
+    throw new Error(
+      "getPageInfo: Geen geldige site, siteId of pageId opgegeven"
+    );
   const response = await fetchPageInfo(site, pageUrl);
   const { data } = await response?.json();
 
@@ -122,7 +125,7 @@ export const getPageInfo = async (site: string, pageUrl: string) => {
 
 export const getLayouts = async (site: string, pageUrl: string) => {
   if (!site || !pageUrl)
-    throw new Error("Geen geldige site, siteId of pageId opgegeven");
+    throw new Error("getLayous: Geen geldige site, siteId of pageId opgegeven");
   const layouts = await fetchLayouts(site, pageUrl);
 
   return layouts;
