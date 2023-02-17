@@ -48,9 +48,8 @@ export const fetchPages = async (site: string) => {
 
 // Pagina info opzoeken aan de hand van pagina url
 export const fetchPageInfo = async (site: string, pageUrl: string) => {
-  const token = await getAccessToken(site);
+  const { token } = await getAccessToken(site);
   if (!token) throw new Error("Geen geldige token opgegeven");
-
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
