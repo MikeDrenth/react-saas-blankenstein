@@ -36,14 +36,13 @@ export const getAccessToken = async (site: string) => {
 export const cacheAccessToken = async (site: string) => {
   const cachedToken = cache.get("testkey");
   if (cachedToken) {
-    console.log("Found token in cache: ", cachedToken);
     return cachedToken;
   }
 
   console.log("Token not found in cache, making API call.");
-  const { token } = await getAccessToken(site);
+  const token = await getAccessToken(site);
   // const token = "165|vWWvQzrx1SFayLlxsL9EoGwdNFLLKNnN3fKD1AJB";
-  console.log("Setting token in cache: ", token);
+  console.log(token);
   cache.set("testkey", token);
   return token;
 };
