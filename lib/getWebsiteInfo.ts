@@ -19,7 +19,6 @@ const hasAccessTokenExpired = () => {
   if (accessToken && accessTokenExpires) {
     const expirationTime = new Date(accessTokenExpires).getTime();
     const currentTime = Date.now();
-    console.log(currentTime, expirationTime, "curr / expiration");
     return currentTime >= expirationTime;
   }
   return true;
@@ -50,9 +49,11 @@ export const fetchSite = async (site: string) => {
 // Alle pagina's ophalen aan de hand van site ID
 export const fetchPages = async (site: string) => {
   if (!accessToken || hasAccessTokenExpired()) {
-    console.log(accessToken, " token ");
+    console.log(accessToken, `Geen token voor : ${site}`);
     await getAccessTokenAndCache(site);
   }
+
+  console.log(accessToken, `de token voor ${site}`);
 
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
