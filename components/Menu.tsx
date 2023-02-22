@@ -1,7 +1,22 @@
 import { useState, useRef, useEffect } from "react";
 
+interface Pages {
+  language_id?: number;
+  page_hidden?: string;
+  page_hidden_menu?: string;
+  page_highlight?: string;
+  page_id?: number;
+  page_order?: number;
+  page_title?: string;
+  page_url?: string;
+  parent_id?: number;
+  page_menuname?: string;
+  site_id?: number;
+  type_id?: 0;
+}
+
 interface PagesProps {
-  pages?: [];
+  pages?: Pages;
   language_id?: number;
   page_hidden?: string;
   page_hidden_menu?: string;
@@ -50,6 +65,7 @@ const DropdownMenu = ({ pages }: PagesProps) => {
     <div className="hidden md:flex md:ml-auto md:w-auto">
       <ul className="inline-flex ml-auto font-medium" ref={ref}>
         {pages?.map((page: PageProps) => {
+          console.log(pages, "pages?");
           // Als er geen menu naam, pagina op hidden of menu hidden aan staat, door gaan
           if (
             page.page_menuname.length === 0 ||
