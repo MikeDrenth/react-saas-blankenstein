@@ -1,17 +1,12 @@
 import { cacheAccessToken } from "./authRequest";
 const API_URL = process.env.API_URL as string;
 
-interface AccessToken {
-  token: string;
-}
-
 let accessToken: string | null = null;
 let accessTokenExpires: number | null = null;
 
 const getAccessTokenAndCache = async (site: string) => {
   const { token, expires_at } = await cacheAccessToken(site);
 
-  console.log(token, "asdjkdfgjhdfjkg jkhsdf");
   if (!token) {
     throw new Error("accessToken: Aanmaken van een token is fout gegaan.");
   }
@@ -24,7 +19,7 @@ const hasAccessTokenExpired = () => {
   if (accessToken && accessTokenExpires) {
     const expirationTime = new Date(accessTokenExpires).getTime();
     const currentTime = Date.now();
-    console.log(currentTime, expirationTime);
+    console.log(currentTime, expirationTime, "curr / expiration");
     return currentTime >= expirationTime;
   }
   return true;
@@ -55,6 +50,7 @@ export const fetchSite = async (site: string) => {
 // Alle pagina's ophalen aan de hand van site ID
 export const fetchPages = async (site: string) => {
   if (!accessToken || hasAccessTokenExpired()) {
+    console.log(accessToken, " token ");
     await getAccessTokenAndCache(site);
   }
 
@@ -75,6 +71,41 @@ export const fetchPages = async (site: string) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+// Pagina info opzoeken aan de hand van pagina url
+export const fetchPageInfo = async (site: string, pageUrl: string) => {
+  if (!accessToken || hasAccessTokenExpired()) {
+    await getAccessTokenAndCache(site);
+  }
+  const ENV_SITE = site?.replace(/-/g, "");
+  const SITE = `${ENV_SITE}_DOMAIN`;
+  const DOMAIN = process.env[SITE];
+
+  try {
+    return fetch(
+      `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[page_url]=${pageUrl}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Cache-Control": "private max-age=900 immutable",
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getPageInfo = async (site: string, pageUrl: string) => {
+  if (!site || !pageUrl)
+    throw new Error(
+      "getPageInfo: Geen geldige site, siteId of pageId opgegeven"
+    );
+  const response = await fetchPageInfo(site, pageUrl);
+  const { data } = await response?.json();
+
+  return data;
 };
 
 export const getPages = async (site: string) => {
