@@ -5,14 +5,15 @@ let accessToken: string | null = null;
 let accessTokenExpires: number | null = null;
 
 const getAccessTokenAndCache = async (site: string) => {
-  const { token, expires_at } = await cacheAccessToken(site);
+  // const { token, expires_at } = await cacheAccessToken(site);
+  const token = await cacheAccessToken(site);
 
   if (!token) {
     throw new Error("accessToken: Aanmaken van een token is fout gegaan.");
   }
 
   accessToken = token;
-  accessTokenExpires = expires_at;
+  accessTokenExpires = "";
 };
 
 const hasAccessTokenExpired = () => {
@@ -49,11 +50,8 @@ export const fetchSite = async (site: string) => {
 // Alle pagina's ophalen aan de hand van site ID
 export const fetchPages = async (site: string) => {
   if (!accessToken || hasAccessTokenExpired()) {
-    console.log(accessToken, `Geen token voor : ${site}`);
     await getAccessTokenAndCache(site);
   }
-
-  console.log(accessToken, `de token voor ${site}`);
 
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
@@ -98,6 +96,32 @@ export const fetchPageInfo = async (site: string, pageUrl: string) => {
   }
 };
 
+const fetchLayouts = async (site: string, pageUrl: string) => {
+  try {
+    const token = await cacheAccessToken(site);
+    const ENV_SITE = site?.replace(/-/g, "");
+    const SITE = `${ENV_SITE}_DOMAIN`;
+    const DOMAIN = process.env[SITE];
+    const response = await fetch(
+      `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[page_url]=${pageUrl}&include=layoutRows`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Cache-Control": "private max-age=900 immutable",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getPageInfo = async (site: string, pageUrl: string) => {
   if (!site || !pageUrl)
     throw new Error(
@@ -120,6 +144,15 @@ export const getPages = async (site: string) => {
 export const getSiteInfo = async (site: string) => {
   if (!site) throw new Error("getSiteInfo: Geen geldige site opgegeven");
   const response = await fetchSite(site);
+  const { data } = await response?.json();
+
+  return data;
+};
+
+export const getLayoutRows = (site: string, pageUrl: string) => {
+  if (!site || !pageUrl)
+    throw new Error("getLayoutRows: Geen geldige site of pageUrl opgegeven.");
+  const response = await fetchLayouts(site, pageUrl);
   const { data } = await response?.json();
 
   return data;

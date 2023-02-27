@@ -36,11 +36,11 @@ export const getAccessToken = async (site: string) => {
 export const cacheAccessToken = async (site: string) => {
   const cachedToken = cache.get("testkey");
   if (cachedToken) {
-    console.log(cachedToken, "cached token");
     return cachedToken;
   }
 
-  const token = await getAccessToken(site);
+  // const token = await getAccessToken(site);
+  const token = "1452|mQh5wGdmVqeOw9IBfsFhmw5vZSzAHueZnaOzwDAi";
   cache.set("testkey", token);
   return token;
 };

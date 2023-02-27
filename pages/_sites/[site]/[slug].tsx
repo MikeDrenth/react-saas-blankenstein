@@ -16,9 +16,16 @@ interface PagesProps {
 interface PostProps {
   stringifiedData: string;
   stringifiedPages: string;
+  stringifiedSiteInfo: string;
+  stringifiedLayouts: string;
 }
 
-export default function Post({ stringifiedPages, stringifiedData }: PostProps) {
+export default function Post({
+  stringifiedPages,
+  stringifiedData,
+  stringifiedSiteInfo,
+  stringifiedLayouts,
+}: PostProps) {
   const router = useRouter();
   if (router.isFallback) return <div>Loader...</div>;
 
@@ -26,25 +33,32 @@ export default function Post({ stringifiedPages, stringifiedData }: PostProps) {
 
   const info = JSON.parse(stringifiedData);
   const pages = JSON.parse(stringifiedPages);
+  const siteInfo = JSON.parse(stringifiedSiteInfo);
+  const layouts = JSON.parse(stringifiedLayouts);
   const data = info[0];
+  const site = siteInfo[0];
 
   const meta = {
-    title: data?.site_name,
-    description: `Welkom bij ${data?.description}`,
+    title: `${site?.site_name} | ${data.page_title}`,
+    description: `Welkom bij ${site?.site_description}`,
     logo: "/logo.png",
     ogImage: "logotje",
     ogUrl: `https://westerbergen.vercel.pub`,
     subdomain: data?.site_name,
     pageTitle: data?.page_title,
-    layoutRows: data?.layoutRows,
+    layoutRows: layouts,
     pages: pages,
   } as Meta;
-
   return <Layout meta={meta}></Layout>;
 }
 
 import { allWebsiteData } from "@/lib/allWebsiteData";
-import { getPages, getPageInfo } from "@/lib/getWebsiteInfo";
+import {
+  getPages,
+  getPageInfo,
+  getSiteInfo,
+  getLayoutRows,
+} from "@/lib/getWebsiteInfo";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = allWebsiteData();
@@ -82,11 +96,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // Deze is nodig voor het ophalen van de layouts of andere pagina informatie
   const pages = await getPages(site as string);
   const pageInfo = await getPageInfo(site as string, slug as string);
+  const siteInfo = await getSiteInfo(site as string);
+  const getLayouts = await getLayoutRows(site as string, slug as string);
 
   return {
     props: {
       stringifiedData: JSON.stringify(pageInfo),
       stringifiedPages: JSON.stringify(pages),
+      stringifiedSiteInfo: JSON.stringify(siteInfo),
+      stringifiedLayouts: JSON.stringify(getLayouts),
     },
   };
 };

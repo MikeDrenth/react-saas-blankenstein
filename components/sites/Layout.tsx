@@ -59,6 +59,7 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
       </nav>
       <div className="pt-20">
         <h1 className="mt-8 text-4xl text-center">{meta?.pageTitle}</h1>
+
         {meta?.layoutRows && <GridLayouts layouts={meta?.layoutRows} />}
       </div>
     </div>
