@@ -5,6 +5,6 @@ export interface Meta {
   ogUrl?: string;
   title?: string;
   pageTitle?: string;
-  layoutRows?: [];
+  layouts?: [];
   pages?: [];
 }

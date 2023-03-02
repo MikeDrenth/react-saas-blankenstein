@@ -1,3 +1,5 @@
+import ContentComponent from "./ContentComponent";
+
 interface LayoutsProps {
   layouts: [];
 }
@@ -13,6 +15,8 @@ interface LayoutProps {
 interface ColumnProps {
   column_id: number;
   col: ColProps;
+  component: [];
+  component_type: string;
 }
 
 interface ColProps {
@@ -21,7 +25,7 @@ interface ColProps {
 
 const GridLayouts = ({ layouts }: LayoutsProps) => {
   return (
-    <div>
+    <div className="mt-8">
       {layouts.map(
         (
           {
@@ -34,22 +38,23 @@ const GridLayouts = ({ layouts }: LayoutsProps) => {
           index: number
         ) => {
           if (!columns || !columns.length) return;
+          console.log(columns, "???");
+
           return (
             <div
-              className={`container columns-${columns && columns.length} 
-              pt-${padding_top && padding_top} 
-              pb-${padding_bottom && padding_bottom} 
-              mt-${margin_top && margin_top} 
-              mb-${margin_bottom && margin_bottom}`}
+              className={`container mx-auto mb-8 grid grid-cols-3 gap-10 font-mono text-white text-sm leading-6 bg-stripes-fuchsia rounded-lg`}
               key={index}
             >
-              {columns.map((column: ColumnProps, index) => {
-                return (
-                  <div key={index}>
-                    Column id {column?.column_id} - Column count
-                    {column?.col.column_count}
-                  </div>
-                );
+              {columns.map(({ component }: ColumnProps, index) => {
+                if (
+                  component &&
+                  component.component_type &&
+                  component.component_type === "content" &&
+                  component.content.content_content
+                )
+                  return (
+                    <ContentComponent key={index} content={component.content} />
+                  );
               })}
             </div>
           );

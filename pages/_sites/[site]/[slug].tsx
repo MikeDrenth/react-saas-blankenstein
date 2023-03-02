@@ -46,7 +46,7 @@ export default function Post({
     ogUrl: `https://westerbergen.vercel.pub`,
     subdomain: data?.site_name,
     pageTitle: data?.page_title,
-    layoutRows: layouts,
+    layouts,
     pages: pages,
   } as Meta;
   return <Layout meta={meta}></Layout>;
@@ -97,14 +97,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const pages = await getPages(site as string);
   const pageInfo = await getPageInfo(site as string, slug as string);
   const siteInfo = await getSiteInfo(site as string);
-  const getLayouts = await getLayoutRows(site as string, slug as string);
+  const [{ layoutRows: layouts }] = await getLayoutRows(
+    site as string,
+    slug as string
+  );
 
+  console.log(layouts);
   return {
     props: {
       stringifiedData: JSON.stringify(pageInfo),
       stringifiedPages: JSON.stringify(pages),
       stringifiedSiteInfo: JSON.stringify(siteInfo),
-      stringifiedLayouts: JSON.stringify(getLayouts),
+      stringifiedLayouts: JSON.stringify(layouts),
     },
   };
 };

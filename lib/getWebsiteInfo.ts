@@ -103,7 +103,7 @@ const fetchLayouts = async (site: string, pageUrl: string) => {
     const SITE = `${ENV_SITE}_DOMAIN`;
     const DOMAIN = process.env[SITE];
     const response = await fetch(
-      `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[page_url]=${pageUrl}&include=layoutRows`,
+      `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[page_url]=${pageUrl}&include=layoutRows.columns.component`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -149,7 +149,7 @@ export const getSiteInfo = async (site: string) => {
   return data;
 };
 
-export const getLayoutRows = (site: string, pageUrl: string) => {
+export const getLayoutRows = async (site: string, pageUrl: string) => {
   if (!site || !pageUrl)
     throw new Error("getLayoutRows: Geen geldige site of pageUrl opgegeven.");
   const response = await fetchLayouts(site, pageUrl);

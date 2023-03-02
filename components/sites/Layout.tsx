@@ -15,7 +15,7 @@ interface LayoutProps extends WithChildren {
 
 export default function Layout({ meta, children, subdomain }: LayoutProps) {
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-orange-50 min-h-screen">
       <Head>
         <title>{meta?.title}</title>
         <link rel="icon" href="/favicon.ico" />
@@ -57,10 +57,10 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
           <Menu pages={meta?.pages}></Menu>
         </div>
       </nav>
-      <div className="pt-20">
-        <h1 className="mt-8 text-4xl text-center">{meta?.pageTitle}</h1>
+      <div className="pt-20 container mx-auto">
+        <h1 className="mt-8 text-4xl text-left">{meta?.pageTitle}</h1>
 
-        {meta?.layoutRows && <GridLayouts layouts={meta?.layoutRows} />}
+        {meta.layouts && <GridLayouts layouts={meta.layouts} />}
       </div>
     </div>
   );
