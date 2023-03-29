@@ -17,7 +17,7 @@ interface Pages {
 }
 
 interface PagesProps extends Pages {
-  pages: Pages[];
+  pages: Pages[] | undefined;
 }
 
 interface PageProps extends Pages {
