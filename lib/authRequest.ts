@@ -10,6 +10,8 @@ export const getAccessToken = async (site: string) => {
   const ENV_SITE = site?.replace(/-/g, "");
   const AUTH_USER = `${ENV_SITE}_AUTH_USERNAME`;
   const AUTH_PASSWORD = `${ENV_SITE}_AUTH_PASSWORD`;
+  console.log(site, "site");
+
   const body = {
     user: process.env[AUTH_USER],
     password: process.env[AUTH_PASSWORD],

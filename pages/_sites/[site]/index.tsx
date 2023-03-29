@@ -58,7 +58,7 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
 
   const data = await getSiteInfo(site as string);
   const pages = await getPages(site as string);
-
+  console.log(data, "data");
   return {
     props: {
       stringifiedData: JSON.stringify(data),

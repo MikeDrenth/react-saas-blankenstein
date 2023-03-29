@@ -45,23 +45,11 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
       </Head>
       <nav className="bg-white fixed w-full top-0 left-0 shadow-sm">
         <div className="container flex justify-center items-center mx-auto">
-          <Link href="/">
-            <Image
-              src="https://boeken.blankensteinaanzee.nl/themes/saas-blankenstein/public/images/logo.svg"
-              alt="Logo"
-              width={250}
-              height={500}
-              className="relative top-3"
-            />
-          </Link>
           <Menu pages={meta?.pages}></Menu>
         </div>
       </nav>
       <div className="pt-20 container mx-auto">
-        <h1 className="mt-8 text-4xl text-left">
-          Je bekijkt nu de website als: {meta?.site}
-        </h1>
-
+        <h1 className="mt-8 text-2xl text-left">{meta?.title}</h1>
         {meta?.layouts && <GridLayouts layouts={meta.layouts} />}
       </div>
     </div>
