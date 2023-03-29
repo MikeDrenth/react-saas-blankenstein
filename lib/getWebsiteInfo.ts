@@ -96,8 +96,10 @@ export const fetchPageInfo = async (site: string, pageUrl: string) => {
 };
 
 const fetchLayouts = async (site: string, pageUrl: string) => {
+  if (!accessToken || hasAccessTokenExpired()) {
+    await getAccessTokenAndCache(site);
+  }
   try {
-    const token = await cacheAccessToken(site);
     const ENV_SITE = site?.replace(/-/g, "");
     const SITE = `${ENV_SITE}_DOMAIN`;
     const DOMAIN = process.env[SITE];
@@ -105,7 +107,7 @@ const fetchLayouts = async (site: string, pageUrl: string) => {
       `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[page_url]=${pageUrl}&include=layoutRows.columns.component`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
           "Cache-Control": "private max-age=900 immutable",
         },
       }
@@ -152,6 +154,7 @@ export const getLayoutRows = async (site: string, pageUrl: string) => {
   if (!site || !pageUrl)
     throw new Error("getLayoutRows: Geen geldige site of pageUrl opgegeven.");
   const response = await fetchLayouts(site, pageUrl);
+  console.log(response);
   const { data } = await response?.json();
 
   return data;
