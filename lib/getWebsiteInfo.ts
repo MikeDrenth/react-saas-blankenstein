@@ -154,7 +154,6 @@ export const getLayoutRows = async (site: string, pageUrl: string) => {
   if (!site || !pageUrl)
     throw new Error("getLayoutRows: Geen geldige site of pageUrl opgegeven.");
   const response = await fetchLayouts(site, pageUrl);
-  console.log(response);
   const { data } = await response?.json();
 
   return data;
