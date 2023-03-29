@@ -55,7 +55,6 @@ export const fetchPages = async (site: string) => {
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
-  console.log(DOMAIN);
   try {
     return fetch(
       `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[language_id]=1&filter[parent_id]=0&filter[page_hidden_menu]=nee&include=children`,
@@ -154,7 +153,6 @@ export const getLayoutRows = async (site: string, pageUrl: string) => {
   if (!site || !pageUrl)
     throw new Error("getLayoutRows: Geen geldige site of pageUrl opgegeven.");
   const response = await fetchLayouts(site, pageUrl);
-  console.log(response, "response");
   const { data } = await response?.json();
 
   return data;
