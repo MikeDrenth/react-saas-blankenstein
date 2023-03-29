@@ -39,8 +39,8 @@ export const cacheAccessToken = async (site: string) => {
     return cachedToken;
   }
 
-  // const token = await getAccessToken(site);
-  const token = "1464|iisQyXmdrB0HPKUuozapGWaltdPgsiUn9GXozLm0";
+  const token = await getAccessToken(site);
+  // const token = "1539|dqyMmPZ6EoF7jLmRRpbl6G0tTEmLWXryF6TuJAsb";
   cache.set("testkey", token);
   return token;
 };
