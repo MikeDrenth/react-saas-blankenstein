@@ -60,7 +60,7 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
       <div className="pt-20 container mx-auto">
         <h1 className="mt-8 text-4xl text-left">{meta?.pageTitle}</h1>
 
-        {meta.layouts && <GridLayouts layouts={meta.layouts} />}
+        {meta?.layouts && <GridLayouts layouts={meta.layouts} />}
       </div>
     </div>
   );

@@ -15,8 +15,13 @@ interface LayoutProps {
 interface ColumnProps {
   column_id: number;
   col: ColProps;
-  component: [];
+  component: component;
   component_type: string;
+}
+
+interface component {
+  component_type: string;
+  content: any;
 }
 
 interface ColProps {

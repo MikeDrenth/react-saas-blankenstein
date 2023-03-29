@@ -13,33 +13,27 @@ interface Pages {
   page_menuname?: string;
   site_id?: number;
   type_id?: 0;
+  children?: ChildrenProps[];
 }
 
-interface PagesProps {
-  pages?: Pages;
-  language_id?: number;
+interface PagesProps extends Pages {
+  pages: Pages[] | undefined;
+}
+
+interface PageProps extends Pages {
+  page_menuname?: string;
   page_hidden?: string;
   page_hidden_menu?: string;
-  page_highlight?: string;
   page_id?: number;
-  page_order?: number;
-  page_title?: string;
   page_url?: string;
-  parent_id?: number;
-  page_menuname?: string;
-  site_id?: number;
-  type_id?: 0;
-  children?: [];
-  page?: [];
-  layouts?: [];
+  children?: ChildrenProps[];
 }
 
-interface PageProps {
+interface ChildrenProps extends Pages {
   page_menuname: string;
   page_hidden: string;
   page_hidden_menu: string;
   page_id: number;
-  children: [];
   page_url: string;
 }
 
@@ -65,13 +59,9 @@ const DropdownMenu = ({ pages }: PagesProps) => {
     <div className="hidden md:flex md:ml-auto md:w-auto">
       <ul className="inline-flex ml-auto font-medium" ref={ref}>
         {pages?.map((page: PageProps) => {
+          console.log(page, "pages");
+
           // Als er geen menu naam, pagina op hidden of menu hidden aan staat, door gaan
-          if (
-            page.page_menuname.length === 0 ||
-            page.page_hidden === "ja" ||
-            page.page_hidden_menu === "ja"
-          )
-            return;
           return (
             <li
               key={page.page_id}
@@ -81,7 +71,7 @@ const DropdownMenu = ({ pages }: PagesProps) => {
               onClick={() => SetMenuOpen(page.page_id)}
             >
               {page.page_menuname}
-              {page.children.length > 0 && (
+              {page.children && page.children.length && (
                 <svg
                   className="w-5 h-5 ml-1"
                   aria-hidden="true"
@@ -97,25 +87,26 @@ const DropdownMenu = ({ pages }: PagesProps) => {
                   menuOpen === page.page_id ? "show" : "hidden"
                 }`}
               >
-                {page.children.map((child: PageProps) => {
-                  // Als er geen menu naam, pagina op hidden of menu hidden aan staat, door gaan
-                  if (
-                    child.page_menuname.length === 0 ||
-                    child.page_hidden === "ja" ||
-                    child.page_hidden_menu === "ja"
-                  )
-                    return;
-                  return (
-                    <li key={child.page_id}>
-                      <a
-                        className="cursor-pointer block bg-slate-200 hover:text-white text-black hover:bg-cyan-500 px-4 py-2"
-                        href={child.page_url}
-                      >
-                        {child.page_menuname}
-                      </a>
-                    </li>
-                  );
-                })}
+                {page.children &&
+                  page.children.map((child: ChildrenProps) => {
+                    // Als er geen menu naam, pagina op hidden of menu hidden aan staat, door gaan
+                    if (
+                      child.page_menuname.length === 0 ||
+                      child.page_hidden === "ja" ||
+                      child.page_hidden_menu === "ja"
+                    )
+                      return;
+                    return (
+                      <li key={child.page_id}>
+                        <a
+                          className="cursor-pointer block bg-slate-200 hover:text-white text-black hover:bg-cyan-500 px-4 py-2"
+                          href={child.page_url}
+                        >
+                          {child.page_menuname}
+                        </a>
+                      </li>
+                    );
+                  })}
               </ul>
             </li>
           );

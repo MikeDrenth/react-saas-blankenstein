@@ -12,8 +12,8 @@ const getAccessTokenAndCache = async (site: string) => {
     throw new Error("accessToken: Aanmaken van een token is fout gegaan.");
   }
 
-  accessToken = token;
-  accessTokenExpires = "";
+  accessToken = token as string;
+  accessTokenExpires = "" as unknown as number;
 };
 
 const hasAccessTokenExpired = () => {
