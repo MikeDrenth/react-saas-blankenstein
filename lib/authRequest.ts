@@ -10,7 +10,6 @@ export const getAccessToken = async (site: string) => {
   const ENV_SITE = site?.replace(/-/g, "");
   const AUTH_USER = `${ENV_SITE}_AUTH_USERNAME`;
   const AUTH_PASSWORD = `${ENV_SITE}_AUTH_PASSWORD`;
-  console.log(site, "site");
 
   const body = {
     user: process.env[AUTH_USER],
@@ -41,7 +40,7 @@ export const cacheAccessToken = async (site: string) => {
   }
 
   const token = await getAccessToken(site);
-  // const token = "1539|dqyMmPZ6EoF7jLmRRpbl6G0tTEmLWXryF6TuJAsb";
+  // const token = "1772|oFqbYUo5Im2WQIXBdKXKFvytQHvRgzZC25kd9ru1";
   cache.set("testkey", token);
   return token;
 };

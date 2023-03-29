@@ -31,7 +31,7 @@ interface ColProps {
 const GridLayouts = ({ layouts }: LayoutsProps) => {
   return (
     <div className="mt-8">
-      {layouts.map(
+      {layouts?.map(
         (
           {
             columns,

@@ -34,6 +34,7 @@ export default function Post({
   const info = JSON.parse(stringifiedData);
   const pages = JSON.parse(stringifiedPages);
   const siteInfo = JSON.parse(stringifiedSiteInfo);
+
   const layouts = JSON.parse(stringifiedLayouts);
   const data = info[0];
   const site = siteInfo[0];
@@ -46,12 +47,11 @@ export default function Post({
     ogUrl: `https://westerbergen.vercel.pub`,
     subdomain: data?.site_name,
     pageTitle: data?.page_title,
-    layouts,
-    pages: pages,
+    layouts: layouts && layouts,
+    pages: pages && pages,
   } as Meta;
   return <Layout meta={meta}></Layout>;
 }
-
 import { allWebsiteData } from "@/lib/allWebsiteData";
 import {
   getPages,

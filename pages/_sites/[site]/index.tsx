@@ -26,13 +26,13 @@ export default function Index({
   const info = data[0];
 
   const meta = {
-    title: info.site_name,
+    title: info && info.site_name && info.site_name,
     description: `Welkom bij ${site}`,
     logo: "/logo.png",
     ogImage: "logotje",
     ogUrl: `https://westerbergen.vercel.pub`,
-    subdomain: info.site_name,
-    pages: pages,
+    subdomain: info && info.site_name && info.site_name,
+    pages: pages && pages,
     site,
   } as Meta;
 

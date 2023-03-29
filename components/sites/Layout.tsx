@@ -52,7 +52,7 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
         <h1 className="mt-8 text-2xl text-left">
           {meta && meta.title && meta?.title}
         </h1>
-        {meta?.layouts && <GridLayouts layouts={meta.layouts} />}
+        {meta && meta?.layouts && <GridLayouts layouts={meta.layouts} />}
       </div>
     </div>
   );
