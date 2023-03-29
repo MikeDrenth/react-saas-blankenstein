@@ -11,8 +11,7 @@ const getAccessTokenAndCache = async (site: string) => {
   if (!token) {
     throw new Error("accessToken: Aanmaken van een token is fout gegaan.");
   }
-
-  accessToken = token as string;
+  accessToken = token.token as string;
   accessTokenExpires = "" as unknown as number;
 };
 
@@ -56,7 +55,7 @@ export const fetchPages = async (site: string) => {
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
-
+  console.log(accessToken);
   try {
     return fetch(
       `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[language_id]=1&filter[parent_id]=0&filter[page_hidden_menu]=nee&include=children`,
