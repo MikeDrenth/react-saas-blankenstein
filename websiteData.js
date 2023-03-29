@@ -10,13 +10,13 @@ export const websiteData = [
     live: "boeken.blankensteinaanzee",
   },
   {
-    site: "nextjs-saas-woad",
+    site: "nextjssaaswoad",
     local: "blankensteinaanzee.localhost",
     live: "boeken.blankensteinaanzee",
   },
   {
-    site: "saas-everyoffice-web",
+    site: "saaseveryofficeweb",
     local: "blankensteinaanzee.localhost",
-    live: "boeken.blankensteinaanzee",
+    live: "scheldeoord.nl",
   },
 ];
