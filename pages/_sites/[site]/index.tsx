@@ -8,13 +8,13 @@ import { getSiteInfo, getPages } from "@/lib/getWebsiteInfo";
 interface IndexProps {
   stringifiedData: string;
   stringifiedPages: string;
-  site: string;
+  stringifiedSite: string;
 }
 
 export default function Index({
   stringifiedData,
   stringifiedPages,
-  site,
+  stringifiedSite,
 }: IndexProps) {
   const router = useRouter();
   if (router.isFallback) return <div>Loader</div>;
@@ -22,6 +22,7 @@ export default function Index({
 
   const data = JSON.parse(stringifiedData);
   const pages = JSON.parse(stringifiedPages);
+  const site = JSON.parse(stringifiedSite);
   const info = data[0];
 
   const meta = {
@@ -62,7 +63,7 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
     props: {
       stringifiedData: JSON.stringify(data),
       stringifiedPages: JSON.stringify(pages),
-      site,
+      stringifiedSite: JSON.stringify(site),
     },
   };
 };
