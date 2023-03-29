@@ -6,7 +6,6 @@ const cache = new NodeCache({ stdTTL: 60 * 60 }); // cache opgeslagen voor 1 uur
 // Request doen om een bearer token aan te maken voor de api requests
 export const getAccessToken = async (site: string) => {
   if (!site) throw new Error("Geen geldige website opgegeven.");
-
   // De juiste user info ophalen in lokaal env bestand
   const ENV_SITE = site?.replace(/-/g, "");
   const AUTH_USER = `${ENV_SITE}_AUTH_USERNAME`;

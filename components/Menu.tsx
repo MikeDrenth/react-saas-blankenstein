@@ -59,8 +59,6 @@ const DropdownMenu = ({ pages }: PagesProps) => {
     <div className="hidden md:flex md:ml-auto md:w-auto">
       <ul className="inline-flex ml-auto font-medium" ref={ref}>
         {pages?.map((page: PageProps) => {
-          console.log(page, "pages");
-
           // Als er geen menu naam, pagina op hidden of menu hidden aan staat, door gaan
           if (
             (page && page.page_menuname && page.page_menuname.length === 0) ||

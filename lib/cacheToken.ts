@@ -13,8 +13,6 @@ export const getAccessToken = async (site: string) => {
     return cachedToken;
   }
 
-  console.log(cachedToken, " asdasdasd");
-
   // De juiste user info ophalen in lokaal env bestand
   const ENV_SITE = site?.replace(/-/g, "");
   const AUTH_USER = `${ENV_SITE}_AUTH_USERNAME`;

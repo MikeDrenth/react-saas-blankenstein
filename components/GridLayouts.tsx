@@ -43,8 +43,6 @@ const GridLayouts = ({ layouts }: LayoutsProps) => {
           index: number
         ) => {
           if (!columns || !columns.length) return;
-          console.log(columns, "???");
-
           return (
             <div
               className={`container mx-auto mb-8 grid grid-cols-3 gap-10 font-mono text-white text-sm leading-6 bg-stripes-fuchsia rounded-lg`}

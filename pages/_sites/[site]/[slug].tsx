@@ -102,7 +102,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     slug as string
   );
 
-  console.log(layouts);
   return {
     props: {
       stringifiedData: JSON.stringify(pageInfo),
