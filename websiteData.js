@@ -14,4 +14,9 @@ export const websiteData = [
     local: "blankensteinaanzee.localhost",
     live: "boeken.blankensteinaanzee",
   },
+  {
+    site: "saas-everyoffice-web",
+    local: "blankensteinaanzee.localhost",
+    live: "boeken.blankensteinaanzee",
+  },
 ];

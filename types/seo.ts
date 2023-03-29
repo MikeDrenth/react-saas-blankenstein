@@ -7,4 +7,5 @@ export interface Meta {
   pageTitle?: string;
   layouts?: [];
   pages?: [];
+  site?: string;
 }

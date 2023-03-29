@@ -8,11 +8,13 @@ import { getSiteInfo, getPages } from "@/lib/getWebsiteInfo";
 interface IndexProps {
   stringifiedData: string;
   stringifiedPages: string;
+  site: string;
 }
 
 export default function Index({
   stringifiedData,
   stringifiedPages,
+  site,
 }: IndexProps) {
   const router = useRouter();
   if (router.isFallback) return <div>Loader</div>;
@@ -24,12 +26,13 @@ export default function Index({
 
   const meta = {
     title: info.site_name,
-    description: `Welkom bij ${info.description}`,
+    description: `Welkom bij ${site}`,
     logo: "/logo.png",
     ogImage: "logotje",
     ogUrl: `https://westerbergen.vercel.pub`,
     subdomain: info.site_name,
     pages: pages,
+    site,
   } as Meta;
 
   return <Layout meta={meta}></Layout>;
@@ -59,6 +62,7 @@ export const getStaticProps: GetStaticProps<IndexProps> = async ({
     props: {
       stringifiedData: JSON.stringify(data),
       stringifiedPages: JSON.stringify(pages),
+      site,
     },
   };
 };

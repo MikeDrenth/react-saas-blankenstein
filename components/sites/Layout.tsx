@@ -58,7 +58,9 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
         </div>
       </nav>
       <div className="pt-20 container mx-auto">
-        <h1 className="mt-8 text-4xl text-left">{meta?.pageTitle}</h1>
+        <h1 className="mt-8 text-4xl text-left">
+          Je bekijkt nu de website als: {meta?.site}
+        </h1>
 
         {meta?.layouts && <GridLayouts layouts={meta.layouts} />}
       </div>
