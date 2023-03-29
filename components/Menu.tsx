@@ -17,7 +17,7 @@ interface Pages {
 }
 
 interface PagesProps extends Pages {
-  pages: Pages[] | undefined;
+  pages: Pages[];
 }
 
 interface PageProps extends Pages {
@@ -62,6 +62,12 @@ const DropdownMenu = ({ pages }: PagesProps) => {
           console.log(page, "pages");
 
           // Als er geen menu naam, pagina op hidden of menu hidden aan staat, door gaan
+          if (
+            (page && page.page_menuname && page.page_menuname.length === 0) ||
+            page.page_hidden === "ja" ||
+            page.page_hidden_menu === "ja"
+          )
+            return;
           return (
             <li
               key={page.page_id}
