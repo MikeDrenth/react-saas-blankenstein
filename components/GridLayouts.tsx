@@ -28,41 +28,39 @@ interface ColProps {
   column_count: number;
 }
 
+// const GridLayouts = (props: LayoutsProps) => {
+//   const [{ columns }] = layoutRows;
+//   console.log(columns, "cols");
+
+//   return <div className="mt-8">asdasd</div>;
+// };
+
 const GridLayouts = ({ layouts }: LayoutsProps) => {
+  const [{ layoutRows } = { layoutRows: [] }] = layouts;
+
   return (
     <div className="mt-8">
-      {layouts?.map(
-        (
-          {
-            columns,
-            margin_top,
-            margin_bottom,
-            padding_top,
-            padding_bottom,
-          }: LayoutProps,
-          index: number
-        ) => {
-          if (!columns || !columns.length) return;
-          return (
-            <div
-              className={`container mx-auto mb-8 grid grid-cols-3 gap-10 font-mono text-white text-sm leading-6 bg-stripes-fuchsia rounded-lg`}
-              key={index}
-            >
-              {columns.map(({ component }: ColumnProps, index) => {
-                if (
-                  component &&
-                  component.component_type &&
-                  component.component_type === "content" &&
-                  component.content.content_content
-                )
-                  return (
-                    <ContentComponent key={index} content={component.content} />
-                  );
-              })}
-            </div>
-          );
-        }
-      )}
+      {layoutRows?.map(({ columns }: LayoutProps, index: number) => {
+        if (!columns || !columns.length) return;
+        return (
+          <div
+            className={`container mx-auto mb-8 grid grid-cols-3 gap-10 font-mono text-white text-sm leading-6 bg-stripes-fuchsia rounded-lg`}
+            key={index}
+          >
+            {columns.map(({ component }: ColumnProps, index) => {
+              if (
+                component &&
+                component.component_type &&
+                component.component_type === "content" &&
+                component.content.content_content
+              )
+                return (
+                  <ContentComponent key={index} content={component.content} />
+                );
+            })}
+          </div>
+        );
+      })}
     </div>
   );
 };
