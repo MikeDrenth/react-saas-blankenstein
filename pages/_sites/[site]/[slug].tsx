@@ -40,7 +40,7 @@ export default function Post({
   const site = siteInfo[0];
 
   const meta = {
-    title: `${site?.site_name} | ${data.page_title}`,
+    title: `${site?.site_name} | ${data?.page_title}`,
     description: `Welkom bij ${site?.site_description}`,
     logo: "/logo.png",
     ogImage: "logotje",
