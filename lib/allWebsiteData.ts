@@ -6,8 +6,6 @@ export const allWebsiteData = () => {
     return {
       params: {
         site: comment.site as string,
-        local: comment.local as string,
-        live: comment.live as string,
       },
     };
   });

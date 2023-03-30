@@ -63,27 +63,27 @@ import {
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = allWebsiteData();
 
-  // Hieronder worden alle pagina's ophaald van website's binenn het project
-  // Deze zijn nodig voor bij de build, dit zorgt voor een sneller load
-  // Kijken hoe dit gaat met caching en of dit eventueel voor problemen kan zorgen bij de build van de website
-  const pages = async () => {
-    const allPages = data.map(async ({ params }) => {
-      const site = params.site;
-      if (!site) return;
-      const pages = await getPages(site);
-      if (!pages) return;
-      return pages?.map((page: PagesProps) => ({
-        params: { site: site, slug: page.page_url },
-      }));
-    });
+  const generatePaths = async () => {
+    const paramsList: { params: { site: string; slug: string } }[] = [];
 
-    return await Promise.all(allPages);
+    await Promise.all(
+      data.map(async ({ params }) => {
+        const pages = await getPages(params.site);
+        for (const page of pages) {
+          paramsList.push({
+            params: { site: params.site, slug: page.page_url },
+          });
+        }
+      })
+    );
+
+    return paramsList;
   };
 
-  const paths = await pages();
+  const paths = await generatePaths();
 
   return {
-    paths: paths[0],
+    paths: paths,
     fallback: true,
   };
 };
@@ -92,15 +92,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!params) throw new Error("No path parameters found");
   const { site, slug } = params;
 
-  // Site info ophalen, deze is nodig voor de site id adhv de website
-  // Deze is nodig voor het ophalen van de layouts of andere pagina informatie
   const pages = await getPages(site as string);
   const pageInfo = await getPageInfo(site as string, slug as string);
   const siteInfo = await getSiteInfo(site as string);
-  const [{ layoutRows: layouts }] = await getLayoutRows(
-    site as string,
-    slug as string
-  );
+  const layouts = await getLayoutRows(site as string, slug as string);
 
   return {
     props: {

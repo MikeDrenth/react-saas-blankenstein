@@ -98,11 +98,12 @@ const fetchLayouts = async (site: string, pageUrl: string) => {
   if (!accessToken || hasAccessTokenExpired()) {
     await getAccessTokenAndCache(site);
   }
+  const ENV_SITE = site?.replace(/-/g, "");
+  const SITE = `${ENV_SITE}_DOMAIN`;
+  const DOMAIN = process.env[SITE];
+
   try {
-    const ENV_SITE = site?.replace(/-/g, "");
-    const SITE = `${ENV_SITE}_DOMAIN`;
-    const DOMAIN = process.env[SITE];
-    const response = await fetch(
+    return fetch(
       `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[page_url]=${pageUrl}&include=layoutRows.columns.component`,
       {
         headers: {
@@ -111,12 +112,6 @@ const fetchLayouts = async (site: string, pageUrl: string) => {
         },
       }
     );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return await response;
   } catch (error) {
     console.log(error);
   }
