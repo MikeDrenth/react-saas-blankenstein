@@ -8,4 +8,17 @@ export interface Meta {
   layouts?: [];
   pages?: [];
   site?: string;
+  stylesheet?: ThemeColors;
+}
+
+export interface ThemeColors {
+  colors: {
+    primary: string;
+    secondary: string;
+    tertiary: string;
+    quaternary: string;
+    quinary: string;
+    senary: string;
+    septenary: string;
+  };
 }

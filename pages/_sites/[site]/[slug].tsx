@@ -34,6 +34,7 @@ export default function Post({
   const info = JSON.parse(stringifiedData);
   const pages = JSON.parse(stringifiedPages);
   const siteInfo = JSON.parse(stringifiedSiteInfo);
+  const [{ stylesheet }] = siteInfo;
 
   const layouts = JSON.parse(stringifiedLayouts);
   const data = info[0];
@@ -49,6 +50,7 @@ export default function Post({
     pageTitle: data?.page_title,
     layouts: layouts && layouts,
     pages: pages && pages,
+    stylesheet: stylesheet && stylesheet,
   } as Meta;
   return <Layout meta={meta}></Layout>;
 }

@@ -4,6 +4,7 @@ import Image from "next/image";
 
 type ContentProps = {
   content: ContentProp;
+  themeColor?: [];
 };
 
 type ContentProp = {
@@ -15,7 +16,7 @@ type ContentProp = {
 
 const ContentComponent = ({ content }: ContentProps) => {
   return (
-    <div className="bg-slate-600 font-sans font-normal flex flex-col rounded-md">
+    <div className={`font-sans font-normal flex flex-col rounded-md`}>
       {content.content_highlight && (
         <Image
           src="https://boeken.blankensteinaanzee.nl/web/assets/images/images/static/website/664/highlight/content-photo-1455641374154-422f32e234cd.jpg.webp?s=407587722679bc2d5e26a3f6ba099882"

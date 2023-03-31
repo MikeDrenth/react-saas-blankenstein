@@ -14,8 +14,12 @@ interface LayoutProps extends WithChildren {
 }
 
 export default function Layout({ meta, children, subdomain }: LayoutProps) {
+  console.log(meta?.stylesheet?.colors?.primary, "meta.primary");
   return (
-    <div className="bg-orange-50 min-h-screen">
+    <div
+      style={{ backgroundColor: meta?.stylesheet?.colors?.senary }}
+      className="min-h-screen"
+    >
       <Head>
         <title>{meta?.title}</title>
         <link rel="icon" href="/favicon.ico" />
@@ -52,7 +56,9 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
         <h1 className="mt-8 text-2xl text-left">
           {meta && meta.title && meta?.title}
         </h1>
-        {meta && meta?.layouts && <GridLayouts layouts={meta.layouts} />}
+        {meta && meta?.layouts && (
+          <GridLayouts stylesheet={meta?.stylesheet} layouts={meta.layouts} />
+        )}
       </div>
     </div>
   );

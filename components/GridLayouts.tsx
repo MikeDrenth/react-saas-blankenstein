@@ -1,7 +1,12 @@
 import ContentComponent from "./ContentComponent";
+import { useState, useEffect } from "react";
 
+interface themeColor {
+  themeColor: ThemeColors;
+}
 interface LayoutsProps {
   layouts: [];
+  stylesheet: any;
 }
 
 interface LayoutProps {
@@ -28,15 +33,17 @@ interface ColProps {
   column_count: number;
 }
 
-// const GridLayouts = (props: LayoutsProps) => {
-//   const [{ columns }] = layoutRows;
-//   console.log(columns, "cols");
+interface ThemeColors {
+  [key: string]: string;
+}
 
-//   return <div className="mt-8">asdasd</div>;
-// };
-
-const GridLayouts = ({ layouts }: LayoutsProps) => {
+const GridLayouts = ({ layouts, stylesheet }: LayoutsProps) => {
   const [{ layoutRows } = { layoutRows: [] }] = layouts;
+  const colors: any = stylesheet?.colors;
+  const themeColors: ThemeColors = {};
+  Object.keys(colors).forEach((key) => {
+    themeColors[key] = `bg-[${colors[key]}]`;
+  });
 
   return (
     <div className="mt-8">
@@ -44,7 +51,7 @@ const GridLayouts = ({ layouts }: LayoutsProps) => {
         if (!columns || !columns.length) return;
         return (
           <div
-            className={`container mx-auto mb-8 grid grid-cols-3 gap-10 font-mono text-white text-sm leading-6 bg-stripes-fuchsia rounded-lg`}
+            className={`${themeColors.primary} container mx-auto mb-8 grid grid-cols-3 gap-10 font-mono text-white text-sm leading-6 rounded-lg`}
             key={index}
           >
             {columns.map(({ component }: ColumnProps, index) => {
