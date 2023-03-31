@@ -29,12 +29,12 @@ export default function Post({
   const router = useRouter();
   if (router.isFallback) return <div>Loader...</div>;
 
-  if (!stringifiedData || !stringifiedPages) return;
+  if (!stringifiedData || !stringifiedPages || stringifiedSiteInfo) return;
 
   const info = JSON.parse(stringifiedData);
   const pages = JSON.parse(stringifiedPages);
   const siteInfo = JSON.parse(stringifiedSiteInfo);
-  const [{ stylesheet }] = siteInfo;
+  const [{ stylesheet } = { stylesheet: null }] = siteInfo;
 
   const layouts = JSON.parse(stringifiedLayouts);
   const data = info[0];
@@ -50,7 +50,7 @@ export default function Post({
     pageTitle: data?.page_title,
     layouts: layouts && layouts,
     pages: pages && pages,
-    stylesheet: stylesheet && stylesheet,
+    stylesheet: stylesheet && stylesheet && [],
   } as Meta;
   return <Layout meta={meta}></Layout>;
 }
