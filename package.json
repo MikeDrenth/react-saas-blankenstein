@@ -28,7 +28,7 @@
     "sass": "^1.54.8",
     "set-cookie-parser": "^2.5.1",
     "storybook-addon-next": "^1.7.1",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.9"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",

@@ -13,12 +13,12 @@ export interface Meta {
 
 export interface ThemeColors {
   colors: {
-    primary: string;
-    secondary: string;
-    tertiary: string;
-    quaternary: string;
-    quinary: string;
-    senary: string;
-    septenary: string;
+    primary?: string;
+    secondary?: string;
+    tertiary?: string;
+    quaternary?: string;
+    quinary?: string;
+    senary?: string;
+    septenary?: string;
   };
 }

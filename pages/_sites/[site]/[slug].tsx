@@ -1,17 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Layout from "@/components/sites/Layout";
-
 import type { Meta } from "@/types";
-
-interface PathProps {
-  site: string;
-  slug: string;
-}
-
-interface PagesProps {
-  page_url: string;
-}
 
 interface PostProps {
   stringifiedData: string;
@@ -28,14 +18,11 @@ export default function Post({
 }: PostProps) {
   const router = useRouter();
   if (router.isFallback) return <div>Loader...</div>;
-
-  if (!stringifiedData || !stringifiedPages || stringifiedSiteInfo) return;
-
+  if (!stringifiedData || !stringifiedPages || !stringifiedSiteInfo) return;
   const info = JSON.parse(stringifiedData);
   const pages = JSON.parse(stringifiedPages);
   const siteInfo = JSON.parse(stringifiedSiteInfo);
-  const [{ stylesheet } = { stylesheet: null }] = siteInfo;
-
+  const [{ stylesheet }] = siteInfo;
   const layouts = JSON.parse(stringifiedLayouts);
   const data = info[0];
   const site = siteInfo[0];
@@ -48,11 +35,15 @@ export default function Post({
     ogUrl: `https://westerbergen.vercel.pub`,
     subdomain: data?.site_name,
     pageTitle: data?.page_title,
-    layouts: layouts && layouts,
-    pages: pages && pages,
-    stylesheet: stylesheet && stylesheet && [],
   } as Meta;
-  return <Layout meta={meta}></Layout>;
+  return (
+    <Layout
+      layouts={layouts}
+      stylesheet={stylesheet}
+      pages={pages}
+      meta={meta}
+    ></Layout>
+  );
 }
 import { allWebsiteData } from "@/lib/allWebsiteData";
 import {
@@ -98,7 +89,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const pageInfo = await getPageInfo(site as string, slug as string);
   const siteInfo = await getSiteInfo(site as string);
   const layouts = await getLayoutRows(site as string, slug as string);
-
   return {
     props: {
       stringifiedData: JSON.stringify(pageInfo),

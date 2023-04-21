@@ -1,34 +1,32 @@
 import Head from "next/head";
-import Link from "next/link";
-import Image from "next/image";
-
 import Menu from "@/components/Menu";
 
-import type { Meta, WithChildren } from "@/types";
+// Import types
+import type { Meta } from "@/types";
 import GridLayouts from "../GridLayouts";
 
-interface LayoutProps extends WithChildren {
+interface LayoutProps {
   meta?: Meta;
-  siteId?: string;
-  subdomain?: string;
+  pages: [];
+  stylesheet: [];
+  layouts: [];
 }
 
-export default function Layout({ meta, children, subdomain }: LayoutProps) {
-  console.log(meta?.stylesheet?.colors?.primary, "meta.primary");
+export default function Layout({
+  meta,
+  pages,
+  layouts,
+  stylesheet,
+}: LayoutProps) {
   return (
-    <div
-      style={{ backgroundColor: meta?.stylesheet?.colors?.senary }}
-      className="min-h-screen"
-    >
+    <div className="min-h-screen">
       <Head>
         <title>{meta?.title}</title>
         <link rel="icon" href="/favicon.ico" />
         <link rel="shortcut icon" type="image/x-icon" href={meta?.logo} />
         <link rel="apple-touch-icon" sizes="180x180" href={meta?.logo} />
-
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
         <meta itemProp="name" content={meta?.title} />
         <meta itemProp="description" content={meta?.description} />
         <meta itemProp="image" content={meta?.ogImage} />
@@ -38,26 +36,19 @@ export default function Layout({ meta, children, subdomain }: LayoutProps) {
         <meta property="og:url" content={meta?.ogUrl} />
         <meta property="og:image" content={meta?.ogImage} />
         <meta property="og:type" content="website" />
-
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@Vercel" />
-        <meta name="twitter:creator" content="@StevenTey" />
-        <meta name="twitter:title" content={meta?.title} />
-        <meta name="twitter:description" content={meta?.description} />
-        <meta name="twitter:image" content={meta?.ogImage} />
-        {subdomain != "demo" && <meta name="robots" content="noindex" />}
       </Head>
       <nav className="bg-white fixed w-full top-0 left-0 shadow-sm">
         <div className="container flex justify-center items-center mx-auto">
-          <Menu pages={meta?.pages}></Menu>
+          {pages && <Menu pages={pages}></Menu>}
         </div>
       </nav>
       <div className="pt-20 container mx-auto">
         <h1 className="mt-8 text-2xl text-left">
           {meta && meta.title && meta?.title}
         </h1>
-        {meta && meta?.layouts && (
-          <GridLayouts stylesheet={meta?.stylesheet} layouts={meta.layouts} />
+
+        {meta && layouts && (
+          <GridLayouts stylesheet={stylesheet} layouts={layouts} />
         )}
       </div>
     </div>

@@ -41,6 +41,7 @@ const DropdownMenu = ({ pages }: PagesProps) => {
   const [menuOpen, SetMenuOpen]: any = useState("");
   const ref = useRef<any>(null);
 
+  // useEffect gebruiken om het menu te openen als er subitems zijn
   useEffect(() => {
     const openMenuHandler = (e: MouseEvent): void => {
       if (ref.current && !ref.current.contains(e.target)) {
@@ -59,6 +60,8 @@ const DropdownMenu = ({ pages }: PagesProps) => {
     <div className="hidden md:flex md:ml-auto md:w-auto">
       <ul className="inline-flex ml-auto font-medium" ref={ref}>
         {pages?.map((page: PageProps) => {
+          console.log(page.page_menuname);
+
           // Als er geen menu naam, pagina op hidden of menu hidden aan staat, door gaan
           if (
             (page && page.page_menuname && page.page_menuname.length === 0) ||

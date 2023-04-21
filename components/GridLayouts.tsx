@@ -5,7 +5,7 @@ interface themeColor {
   themeColor: ThemeColors;
 }
 interface LayoutsProps {
-  layouts: [];
+  layouts: []; // Aangeven welke velden hier in zitten, dit kan via een Type gebeuren.
   stylesheet: any;
 }
 
@@ -39,11 +39,8 @@ interface ThemeColors {
 
 const GridLayouts = ({ layouts, stylesheet }: LayoutsProps) => {
   const [{ layoutRows } = { layoutRows: [] }] = layouts;
-  const colors: any = stylesheet?.colors;
-  const themeColors: ThemeColors = {};
-  Object.keys(colors).forEach((key) => {
-    themeColors[key] = `bg-[${colors[key]}]`;
-  });
+
+  console.log(stylesheet, "123123");
 
   return (
     <div className="mt-8">
@@ -51,7 +48,7 @@ const GridLayouts = ({ layouts, stylesheet }: LayoutsProps) => {
         if (!columns || !columns.length) return;
         return (
           <div
-            className={`${themeColors.primary} container mx-auto mb-8 grid grid-cols-3 gap-10 font-mono text-white text-sm leading-6 rounded-lg`}
+            className={`container mx-auto mb-8 grid grid-cols-3 gap-10 font-mono text-white text-sm leading-6 rounded-lg`}
             key={index}
           >
             {columns.map(({ component }: ColumnProps, index) => {
@@ -62,7 +59,11 @@ const GridLayouts = ({ layouts, stylesheet }: LayoutsProps) => {
                 component.content.content_content
               )
                 return (
-                  <ContentComponent key={index} content={component.content} />
+                  <ContentComponent
+                    colors={stylesheet}
+                    key={index}
+                    content={component.content}
+                  />
                 );
             })}
           </div>

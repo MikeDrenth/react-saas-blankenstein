@@ -11,7 +11,7 @@ const getAccessTokenAndCache = async (site: string) => {
   if (!token) {
     throw new Error("accessToken: Aanmaken van een token is fout gegaan.");
   }
-  accessToken = token.token as string;
+  accessToken = token as string;
   accessTokenExpires = "" as unknown as number;
 };
 
@@ -55,6 +55,7 @@ export const fetchPages = async (site: string) => {
   const ENV_SITE = site?.replace(/-/g, "");
   const SITE = `${ENV_SITE}_DOMAIN`;
   const DOMAIN = process.env[SITE];
+
   try {
     return fetch(
       `${API_URL}/pages?filter[domain]=${DOMAIN}&filter[language_id]=1&filter[parent_id]=0&filter[page_hidden_menu]=nee&include=children`,
@@ -129,7 +130,7 @@ export const getPageInfo = async (site: string, pageUrl: string) => {
 };
 
 export const getPages = async (site: string) => {
-  if (!site) throw new Error("getPages: Geen geldige site of siteId opgegeven");
+  if (!site) throw new Error("getPages: Geen geldige site");
   const response = await fetchPages(site);
   const { data } = await response?.json();
 
